@@ -1,31 +1,51 @@
 package agh.ics.oop;
 
+import java.util.Arrays;
+
 public class World {
     public static void main(String[] args)
     {
         System.out.println("system wystartował");
-        run(args);
+        run(arg_converter(args));
         System.out.println("system zakończył działanie");
     }
-    static void run(String[] args)
-    {
+
+    private static Direction[] arg_converter(String[] args) {
+        Direction[] arr= new Direction[args.length];
+        int i=0;
         for(String arg : args)
         {
-            switch(arg)
+            switch (arg)
             {
                 case "f":
-                    System.out.println("zwierzak idzie do przodu");
+                    arr[i++]=Direction.FORWARD;
                     break;
                 case "b":
-                    System.out.println("zwierzak idzie do tyłu");
-                    break;
-                case "r":
-                    System.out.println("zwierzak skręca w prawo");
+                    arr[i++]=Direction.BACKWARD;
                     break;
                 case "l":
-                    System.out.println("zwierzak skręca w lewo");
+                    arr[i++]=Direction.LEFT;
                     break;
+                case "r":
+                    arr[i++]=Direction.RIGHT;
+                    break;
+
             }
+        }
+        return Arrays.copyOfRange(arr,0,i);
+    }
+
+    private static void run(Direction[] args)
+    {
+        for(Direction arg : args)
+        {
+            System.out.println(switch(arg)
+            {
+                case FORWARD -> "zwierzak idzie do przodu";
+                case BACKWARD -> "zwierzak idzie do tyłu";
+                case RIGHT -> "zwierzak skręca w prawo";
+                case LEFT -> "zwierzak skręca w lewo";
+            });
         }
     }
 }
