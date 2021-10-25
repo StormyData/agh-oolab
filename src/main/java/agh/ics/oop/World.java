@@ -1,14 +1,12 @@
 package agh.ics.oop;
 
 
-import java.io.IOError;
-
 public class World {
     public static void main(String[] args) {
         System.out.println("system wystartował");
         try
         {
-            run();
+            run(args);
         }
         catch (Exception e)
         {
@@ -19,25 +17,16 @@ public class World {
 
 
     }
-    private static void run()
+    private static void run(String[] args)
     {
-        Vector2d position1 = new Vector2d(1, 2);
-        System.out.println(position1);
-        Vector2d position2 = new Vector2d(-2, 1);
-        System.out.println(position2);
-        System.out.println(position1.add(position2));
-        MapDirection md = MapDirection.EAST;
-        for (int i = 0; i < 4; i++)
+        OptionsParser parser=new OptionsParser();
+        Animal animal=new Animal();
+        MoveDirection[] arr = parser.parse(args);
+        for(MoveDirection moveDir : arr)
         {
-            System.out.println(md);
-            md=md.next();
+            animal.move(moveDir);
         }
-        for (int i = 0; i < 4; i++)
-        {
-            System.out.println(md);
-            md=md.previous();
-        }
-
+        System.out.println(animal);
     }
 
 
