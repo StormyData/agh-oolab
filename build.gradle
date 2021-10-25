@@ -10,14 +10,14 @@ repositories {
     mavenCentral()
 }
 application {
-    mainClassName = 'agh.ics.oop.World'
+    getMainClass().set('agh.ics.oop.World')
 }
 
 dependencies {
-    implementation 'org.junit.jupiter:junit-jupiter:5.7.0'
-    implementation 'org.testng:testng:7.1.0'
+    implementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+    implementation 'org.testng:testng:7.4.0'
     testImplementation "org.junit.jupiter:junit-jupiter:5.8.1"
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 }
 
 test {
