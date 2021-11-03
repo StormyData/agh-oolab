@@ -3,19 +3,29 @@ package agh.ics.oop;
 public class Animal {
     private Vector2d position = new Vector2d(2,2);
     private MapDirection facing = MapDirection.NORTH;
-    Animal()
+    private IWorldMap map;
+    Animal(IWorldMap map)
     {
-
+        this.map=map;
+        this.map.place(this);
     }
 
-    Animal(Vector2d pos,MapDirection facing)
+    Animal(IWorldMap map, Vector2d pos,MapDirection facing)
     {
         this.position=pos;
         this.facing=facing;
+        this.map=map;
+        this.map.place(this);
     }
 
     public String toString() {
-        return String.format("Animal at %s facing %s",position,facing);
+        return switch (facing)
+                {
+                    case SOUTH -> "S";
+                    case WEST -> "W";
+                    case EAST -> "E";
+                    case NORTH -> "N";
+                };
     }
     public void move(MoveDirection direction)
     {
@@ -35,8 +45,9 @@ public class Animal {
                 facing=facing.previous();
                 break;
         }
-        if(newPos.follows(new Vector2d(0,0)) && newPos.precedes(new Vector2d(4,4)))
+        if(map.canMoveTo(newPos))
             position=newPos;
+
     }
     Vector2d getPosition()
     {
