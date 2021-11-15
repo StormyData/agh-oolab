@@ -1,5 +1,7 @@
 package agh.ics.oop;
 
+import agh.ics.oop.Config.VisualizationEngineType;
+
 public class World {
     public static void main(String[] args) {
         System.out.println("system wystartował");
@@ -22,13 +24,14 @@ public class World {
         IWorldMap map = new GrassField(10);
         Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
         IEngine engine;
-        if(config.STEPPED)
+        if(Config.STEPPED)
         {
-            IMapVisualizationEngine mve;
-            if(config.SWING)
-                 mve = new SwingMapVisualizationEngine(map,new Vector2d(-10,-10),new Vector2d(10,10));
-            else
-                mve = new ConsoleMapVisualizationEngine(map,new Vector2d(0,0),new Vector2d(9,4),System.out);
+            IMapVisualizationEngine mve = switch (Config.visualizationEngineType)
+                    {
+                        case SWINGIMG -> new SwingImageBasedMapVisualizationEngine(map,new Vector2d(-10,-10),new Vector2d(10,10));
+                        case SWINGTEXT ->  new SwingTextBasedMapVisualizationEngine(map,new Vector2d(-10,-10),new Vector2d(10,10));
+                        case CONSOLE -> new ConsoleMapVisualizationEngine(map,new Vector2d(0,0),new Vector2d(9,4),System.out);
+                    };
             engine = new SteppedSimulationEngine(directions, map, positions,mve,1000);
         }
         else
@@ -36,7 +39,7 @@ public class World {
 
         engine.run();
         System.out.println(map);
-        if(config.STEPPED && !config.SWING) {
+        if(Config.STEPPED && Config.visualizationEngineType == VisualizationEngineType.CONSOLE) {
             try {
                 Thread.sleep(1000*(1+directions.length));
             } catch (InterruptedException e) {

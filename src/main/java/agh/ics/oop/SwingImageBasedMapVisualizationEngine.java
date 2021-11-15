@@ -1,10 +1,12 @@
 package agh.ics.oop;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
 
-public class SwingMapVisualizationEngine implements IMapVisualizationEngine {
+public class SwingImageBasedMapVisualizationEngine implements IMapVisualizationEngine {
     private static final String EMPTY_CELL=" ";
-    private static final int PIXELS_PER_CELL=50;
+    private static final int PIXELS_PER_CELL=128;
 
 
     private final IWorldMap map;
@@ -15,7 +17,7 @@ public class SwingMapVisualizationEngine implements IMapVisualizationEngine {
     private final JFrame frame;
     private final JLabel[][] displayData;
 
-    SwingMapVisualizationEngine(IWorldMap map, Vector2d lowerLeft, Vector2d upperRight) {
+    SwingImageBasedMapVisualizationEngine(IWorldMap map, Vector2d lowerLeft, Vector2d upperRight) {
         this.map = map;
         this.lowerLeft = lowerLeft;
         this.upperRight = upperRight;
@@ -30,8 +32,8 @@ public class SwingMapVisualizationEngine implements IMapVisualizationEngine {
             for(int x=0;x<width;x++)
             {
                 displayData[x][y]=new JLabel();
-                displayData[x][y].setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 displayData[x][y].setHorizontalAlignment(SwingConstants.CENTER);
+                displayData[x][y].setVerticalAlignment(SwingConstants.CENTER);
                 this.frame.add(displayData[x][y]);
             }
         }
@@ -52,7 +54,10 @@ public class SwingMapVisualizationEngine implements IMapVisualizationEngine {
         for(int x=0; x<width;x++)
         {
             for(int y=0;y<height;y++)
-                displayData[x][y].setText(drawObject(new Vector2d(x+ lowerLeft.x,upperRight.y-y)));
+            {
+                String objName =drawObject(new Vector2d(x+ lowerLeft.x,upperRight.y-y));
+                displayData[x][y].setIcon(ImageContainerSingleton.getInstance().iconOf(objName));
+            };
         }
         frame.repaint();
     }

@@ -27,7 +27,7 @@ public class Grass extends AbstractWorldMapElement{
     {
         Vector2d oldPos=position;
         regenerate();
-        if(config.DEBUG)
+        if(Config.DEBUG)
             System.out.printf("grass at %s got eaten and regenerated at %s\n",oldPos,position);
     }
     private void regenerate()
