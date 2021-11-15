@@ -1,7 +1,5 @@
 package agh.ics.oop;
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
 import java.awt.*;
 
 public class SwingMapVisualizationEngine implements IMapVisualizationEngine {
@@ -40,6 +38,7 @@ public class SwingMapVisualizationEngine implements IMapVisualizationEngine {
         frame.setLayout(new GridLayout(height,width));
         frame.setSize(PIXELS_PER_CELL*width,PIXELS_PER_CELL*height);
         frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     @Override
@@ -58,7 +57,7 @@ public class SwingMapVisualizationEngine implements IMapVisualizationEngine {
         frame.repaint();
     }
     private String drawObject(Vector2d currentPosition) {
-        String result = null;
+        String result;
         if (this.map.isOccupied(currentPosition)) {
             Object object = this.map.objectAt(currentPosition);
             if (object != null) {

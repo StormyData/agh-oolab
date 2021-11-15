@@ -1,23 +1,25 @@
 package agh.ics.oop;
 
-public class Animal {
-    private Vector2d position = new Vector2d(2,2);
+public class Animal extends AbstractWorldMapElement {
     private MapDirection facing = MapDirection.NORTH;
-    private IWorldMap map;
     Animal(IWorldMap map)
     {
-        this.map=map;
+        super(new Vector2d(2,2),map);
+        if(map.objectAt(position) instanceof Grass grass)
+        {
+            grass.eat();
+        }
         this.map.place(this);
     }
 
     Animal(IWorldMap map, Vector2d pos,MapDirection facing)
     {
-        this.position=pos;
+        super(pos,map);
         this.facing=facing;
         this.map=map;
         this.map.place(this);
     }
-
+    @Override
     public String toString() {
         return switch (facing)
                 {
@@ -30,31 +32,32 @@ public class Animal {
     public void move(MoveDirection direction)
     {
         Vector2d newPos = position;
-        switch (direction)
-        {
-            case FORWARD:
-                newPos=position.add(facing.toUnitVector());
-                break;
-            case BACKWARD:
-                newPos=position.add(facing.toUnitVector().opposite());
-                break;
-            case RIGHT:
-                facing=facing.next();
-                break;
-            case LEFT:
-                facing=facing.previous();
-                break;
+        switch (direction) {
+            case FORWARD -> newPos = position.add(facing.toUnitVector());
+            case BACKWARD -> newPos = position.add(facing.toUnitVector().opposite());
+            case RIGHT -> facing = facing.next();
+            case LEFT -> facing = facing.previous();
         }
         if(map.canMoveTo(newPos))
+        {
+            Object object=map.objectAt(newPos);
+            if(object instanceof Grass grass)
+            {
+                grass.eat();
+            }
             position=newPos;
+        }
 
-    }
-    Vector2d getPosition()
-    {
-        return position;
+
     }
     MapDirection getFacing()
     {
         return facing;
+    }
+
+    @Override
+    public boolean getCollision()
+    {
+        return true;
     }
 }

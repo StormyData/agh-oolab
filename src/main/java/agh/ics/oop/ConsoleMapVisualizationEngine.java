@@ -1,9 +1,7 @@
 package agh.ics.oop;
-import jdk.jshell.spi.ExecutionControl;
 
 import java.io.PrintStream;
 public class ConsoleMapVisualizationEngine implements IMapVisualizationEngine{
-    private final IWorldMap map;
     private final Vector2d lowerLeft;
     private final Vector2d upperRight;
     private final PrintStream stream;
@@ -11,7 +9,6 @@ public class ConsoleMapVisualizationEngine implements IMapVisualizationEngine{
     private int lastLength=0;
 
     public ConsoleMapVisualizationEngine(IWorldMap map, Vector2d lowerLeft, Vector2d upperRight, PrintStream stream) {
-        this.map = map;
         this.lowerLeft = lowerLeft;
         this.upperRight = upperRight;
         this.stream = stream;

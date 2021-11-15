@@ -3,21 +3,19 @@ import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 
 public class SteppedSimulationEngine implements IEngine{
-     private MoveDirection[] moves;
-        private IWorldMap map;
-        private Animal[] animals;
+     private final MoveDirection[] moves;
+    private final Animal[] animals;
         private Timer timer;
-        private IMapVisualizationEngine mve;
-        private int delay;
+        private final IMapVisualizationEngine mve;
+        private final int delay;
         private int i=0;
         SteppedSimulationEngine(MoveDirection[] moves, IWorldMap map, Vector2d[] positions, IMapVisualizationEngine mve,int delay)
         {
             this.delay=delay;
             this.moves=moves;
-            this.map=map;
             animals = new Animal[positions.length];
             for(int i=0;i< positions.length;i++)
-                animals[i]=new Animal(this.map,positions[i],MapDirection.NORTH);
+                animals[i]=new Animal(map,positions[i],MapDirection.NORTH);
             this.mve = mve;
             this.mve.draw();
         }

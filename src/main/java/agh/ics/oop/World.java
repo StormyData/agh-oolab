@@ -1,7 +1,5 @@
 package agh.ics.oop;
 
-import java.util.Timer;
-
 public class World {
     public static void main(String[] args) {
         System.out.println("system wystartował");
@@ -18,15 +16,33 @@ public class World {
 
 
     }
-    private static void run(String[] args) throws InterruptedException {
+    private static void run(String[] args) {
         MoveDirection[] directions = new OptionsParser().parse(args);
-        IWorldMap map = new RectangularMap(10, 5);
+        //IWorldMap map = new RectangularMap(10, 5);
+        IWorldMap map = new GrassField(10);
         Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
-        //IMapVisualizationEngine mve = new ConsoleMapVisualizationEngine(map,new Vector2d(0,0),new Vector2d(9,4),System.out);
-        IMapVisualizationEngine mve = new SwingMapVisualizationEngine(map,new Vector2d(0,0),new Vector2d(9,4));
-        IEngine engine = new SteppedSimulationEngine(directions, map, positions,mve,1000);
+        IEngine engine;
+        if(config.STEPPED)
+        {
+            IMapVisualizationEngine mve;
+            if(config.SWING)
+                 mve = new SwingMapVisualizationEngine(map,new Vector2d(-10,-10),new Vector2d(10,10));
+            else
+                mve = new ConsoleMapVisualizationEngine(map,new Vector2d(0,0),new Vector2d(9,4),System.out);
+            engine = new SteppedSimulationEngine(directions, map, positions,mve,1000);
+        }
+        else
+            engine = new SimulationEngine(directions,map,positions);
+
         engine.run();
-        Thread.sleep(1000*(1+directions.length));
+        System.out.println(map);
+        if(config.STEPPED && !config.SWING) {
+            try {
+                Thread.sleep(1000*(1+directions.length));
+            } catch (InterruptedException e) {
+                System.exit(0);
+            }
+        }
      }
 
 
