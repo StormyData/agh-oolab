@@ -1,10 +1,13 @@
 package agh.ics.oop;
 
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
-public class Grass extends AbstractWorldMapElement{
+public class Grass extends AbstractWorldMapElement implements IPositionChangedObservable{
     static private final Random random =new Random();
+    private List<IPositionChangeObserver> positionChangeObservers = new LinkedList<>();
     private int grassGenBound;
 
     Grass(IWorldMap map, int grassGenBound)
@@ -32,8 +35,6 @@ public class Grass extends AbstractWorldMapElement{
     }
     private void regenerate()
     {
-        Vector2d oldPosition=position;
-        position=null;
         int tries=1;
         Vector2d nextPosition=new Vector2d(random.nextInt(grassGenBound), random.nextInt(grassGenBound));
         while(map.isOccupied(nextPosition))
@@ -41,11 +42,24 @@ public class Grass extends AbstractWorldMapElement{
             nextPosition = new Vector2d(random.nextInt(grassGenBound), random.nextInt(grassGenBound));
             tries++;
             if(tries>grassGenBound*grassGenBound*grassGenBound)
-            {
-                position=oldPosition;
-                return;
-            }
+                return;//TODO: Throw cannot regenrate
         }
+        if(!nextPosition.equals(position))
+            onPositionChange(position,nextPosition);
         position=nextPosition;
+    }
+    private void onPositionChange(Vector2d oldPos, Vector2d newPos)
+    {
+        for(IPositionChangeObserver positionChangeObserver : positionChangeObservers)
+            positionChangeObserver.positionChange(oldPos,newPos);
+    }
+    @Override
+    public void addObserver(IPositionChangeObserver observer) {
+        positionChangeObservers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(IPositionChangeObserver observer) {
+        positionChangeObservers.remove(observer);
     }
 }

@@ -1,7 +1,11 @@
 package agh.ics.oop;
 
-public class Animal extends AbstractWorldMapElement {
+import java.util.LinkedList;
+import java.util.List;
+
+public class Animal extends AbstractWorldMapElement implements IPositionChangedObservable {
     private MapDirection facing = MapDirection.NORTH;
+    private List<IPositionChangeObserver> positionChangeObservers = new LinkedList<>();
     Animal(IWorldMap map)
     {
         super(new Vector2d(2,2),map);
@@ -9,7 +13,9 @@ public class Animal extends AbstractWorldMapElement {
         {
             grass.eat();
         }
+        //TODO: Throw if cannot place
         this.map.place(this);
+
     }
 
     Animal(IWorldMap map, Vector2d pos,MapDirection facing)
@@ -45,6 +51,8 @@ public class Animal extends AbstractWorldMapElement {
             {
                 grass.eat();
             }
+            if(!position.equals(newPos))
+                onPositionChange(position,newPos);
             position=newPos;
         }
 
@@ -59,5 +67,20 @@ public class Animal extends AbstractWorldMapElement {
     public boolean getCollision()
     {
         return true;
+    }
+
+    private void onPositionChange(Vector2d oldPos, Vector2d newPos)
+    {
+        for(IPositionChangeObserver positionChangeObserver : positionChangeObservers)
+            positionChangeObserver.positionChange(oldPos,newPos);
+    }
+    @Override
+    public void addObserver(IPositionChangeObserver observer) {
+        positionChangeObservers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(IPositionChangeObserver observer) {
+        positionChangeObservers.remove(observer);
     }
 }

@@ -13,15 +13,17 @@ public class GrassField extends AbstractWorldMap{
     }
 
     private void tryGenerateGrass() {
-        mapElements.add(new Grass(this, grassGenBound));
+        Grass grass =new Grass(this, grassGenBound);
+        mapElements.put(grass.getPosition(),grass);
+        grass.addObserver(this);
     }
 
     protected Vector2d getLowerBound()
     {
         if(mapElements.size() == 0)
             return null;
-        Vector2d lowerBound = mapElements.get(0).getPosition();
-        for(AbstractWorldMapElement mapElement : mapElements)
+        Vector2d lowerBound = ((AbstractWorldMapElement)mapElements.values().toArray()[0]).getPosition();//Będzie lepiej na następnym labie
+        for(AbstractWorldMapElement mapElement : mapElements.values())
             lowerBound = mapElement.getPosition().lowerLeft(lowerBound);
         return lowerBound;
     }
@@ -29,8 +31,8 @@ public class GrassField extends AbstractWorldMap{
     {
         if(mapElements.size() == 0)
             return null;
-        Vector2d upperBound = mapElements.get(0).getPosition();
-        for(AbstractWorldMapElement mapElement : mapElements)
+        Vector2d upperBound = ((AbstractWorldMapElement)mapElements.values().toArray()[0]).getPosition();//Będzie lepiej na następnym labie
+        for(AbstractWorldMapElement mapElement : mapElements.values())
             upperBound = mapElement.getPosition().upperRight(upperBound);
         return upperBound;
     }
