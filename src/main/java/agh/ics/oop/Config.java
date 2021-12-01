@@ -5,9 +5,11 @@ public class Config {
     {
         SWINGTEXT,
         SWINGIMG,
+        CONSOLEFULL,
         CONSOLE;
+
     }
     public static final boolean DEBUG=false;
     public static final boolean STEPPED=true;
-    public static final VisualizationEngineType visualizationEngineType = VisualizationEngineType.SWINGIMG;
+    public static final VisualizationEngineType visualizationEngineType = VisualizationEngineType.CONSOLEFULL;
 }

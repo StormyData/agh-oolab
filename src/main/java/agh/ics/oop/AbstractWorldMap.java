@@ -1,8 +1,6 @@
 package agh.ics.oop;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 abstract public class AbstractWorldMap implements IWorldMap,IPositionChangeObserver{
@@ -10,12 +8,11 @@ abstract public class AbstractWorldMap implements IWorldMap,IPositionChangeObser
     protected final MapVisualizer mapVisualizer=new MapVisualizer(this);
 
     @Override
-    public boolean place(Animal animal) {
+    public void place(Animal animal) throws IllegalArgumentException {
         if(!canMoveTo(animal.getPosition()))
-            return false;
+            throw new IllegalArgumentException(String.format("cannot place animal at %s", animal.getPosition()));
         mapElements.put(animal.getPosition(), animal);
         animal.addObserver(this);
-        return true;
     }
     @Override
     public boolean canMoveTo(Vector2d position) {
@@ -42,11 +39,11 @@ abstract public class AbstractWorldMap implements IWorldMap,IPositionChangeObser
         return mapVisualizer.draw(getLowerBound(),getUpperBound());
     }
     @Override
-    public void positionChange(Vector2d oldPosition, Vector2d newPosition)
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition)
     {
         AbstractWorldMapElement mapElement = mapElements.get(oldPosition);
         if(Config.DEBUG)
-            System.out.printf("received position change event object %s moved from %s to %s\n",mapElement,oldPosition,newPosition);
+            System.out.printf("received position changed event object %s moved from %s to %s\n",mapElement,oldPosition,newPosition);
         mapElements.remove(oldPosition);
         mapElements.put(newPosition,mapElement);
     }

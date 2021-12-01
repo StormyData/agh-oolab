@@ -44,14 +44,16 @@ public class Grass extends AbstractWorldMapElement implements IPositionChangedOb
             if(tries>grassGenBound*grassGenBound*grassGenBound)
                 return;//TODO: Throw cannot regenrate
         }
-        if(!nextPosition.equals(position))
-            onPositionChange(position,nextPosition);
+        Vector2d oldPosition=position;
         position=nextPosition;
+        if(!position.equals(oldPosition))
+            onPositionChanged(oldPosition,position);
+
     }
-    private void onPositionChange(Vector2d oldPos, Vector2d newPos)
+    private void onPositionChanged(Vector2d oldPos, Vector2d newPos)
     {
         for(IPositionChangeObserver positionChangeObserver : positionChangeObservers)
-            positionChangeObserver.positionChange(oldPos,newPos);
+            positionChangeObserver.positionChanged(oldPos,newPos);
     }
     @Override
     public void addObserver(IPositionChangeObserver observer) {

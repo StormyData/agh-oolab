@@ -30,6 +30,7 @@ public class World {
                     {
                         case SWINGIMG -> new SwingImageBasedMapVisualizationEngine(map,new Vector2d(-10,-10),new Vector2d(10,10));
                         case SWINGTEXT ->  new SwingTextBasedMapVisualizationEngine(map,new Vector2d(-10,-10),new Vector2d(10,10));
+                        case CONSOLEFULL -> new ConsoleFullMapVisualizationEngine((AbstractWorldMap) map,System.out);
                         case CONSOLE -> new ConsoleMapVisualizationEngine(map,new Vector2d(0,0),new Vector2d(9,4),System.out);
                     };
             engine = new SteppedSimulationEngine(directions, map, positions,mve,1000);
@@ -39,7 +40,7 @@ public class World {
 
         engine.run();
         System.out.println(map);
-        if(Config.STEPPED && Config.visualizationEngineType == VisualizationEngineType.CONSOLE) {
+        if(Config.STEPPED && (Config.visualizationEngineType == VisualizationEngineType.CONSOLE || Config.visualizationEngineType == VisualizationEngineType.CONSOLEFULL)) {
             try {
                 Thread.sleep(1000*(1+directions.length));
             } catch (InterruptedException e) {

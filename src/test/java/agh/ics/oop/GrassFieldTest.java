@@ -7,6 +7,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class GrassFieldTest {
 
     @Test
+    void place()
+    {
+        GrassField grassField=new GrassField(10);
+        assertDoesNotThrow( () -> new Animal(grassField,new Vector2d(3,3),MapDirection.NORTH));
+        assertThrows(IllegalArgumentException.class,() -> new Animal(grassField,new Vector2d(3,3),MapDirection.NORTH),"cannot place animal at (3,3)");
+    }
+
+    @Test
     void canMoveTo() {
         GrassField map=new GrassField(10);
         assertTrue(map.canMoveTo(new Vector2d(5,5)));

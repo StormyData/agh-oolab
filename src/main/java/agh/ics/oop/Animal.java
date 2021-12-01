@@ -2,28 +2,26 @@ package agh.ics.oop;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class Animal extends AbstractWorldMapElement implements IPositionChangedObservable {
     private MapDirection facing = MapDirection.NORTH;
     private List<IPositionChangeObserver> positionChangeObservers = new LinkedList<>();
     Animal(IWorldMap map)
     {
-        super(new Vector2d(2,2),map);
-        if(map.objectAt(position) instanceof Grass grass)
-        {
-            grass.eat();
-        }
-        //TODO: Throw if cannot place
-        this.map.place(this);
-
+        this(map,new Vector2d(2,2),MapDirection.NORTH);
     }
 
     Animal(IWorldMap map, Vector2d pos,MapDirection facing)
     {
         super(pos,map);
+        if(map.objectAt(position) instanceof Grass grass)
+        {
+            grass.eat();
+        }
         this.facing=facing;
-        this.map=map;
         this.map.place(this);
+        //TODO: Throw if cannot place
     }
     @Override
     public String toString() {
@@ -51,9 +49,11 @@ public class Animal extends AbstractWorldMapElement implements IPositionChangedO
             {
                 grass.eat();
             }
-            if(!position.equals(newPos))
-                onPositionChange(position,newPos);
+            Vector2d oldPos= position;
             position=newPos;
+            if(!position.equals(oldPos))
+                onPositionChanged(oldPos,position);
+
         }
 
 
@@ -69,10 +69,10 @@ public class Animal extends AbstractWorldMapElement implements IPositionChangedO
         return true;
     }
 
-    private void onPositionChange(Vector2d oldPos, Vector2d newPos)
+    private void onPositionChanged(Vector2d oldPos, Vector2d newPos)
     {
         for(IPositionChangeObserver positionChangeObserver : positionChangeObservers)
-            positionChangeObserver.positionChange(oldPos,newPos);
+            positionChangeObserver.positionChanged(oldPos,newPos);
     }
     @Override
     public void addObserver(IPositionChangeObserver observer) {
@@ -83,4 +83,5 @@ public class Animal extends AbstractWorldMapElement implements IPositionChangedO
     public void removeObserver(IPositionChangeObserver observer) {
         positionChangeObservers.remove(observer);
     }
+
 }

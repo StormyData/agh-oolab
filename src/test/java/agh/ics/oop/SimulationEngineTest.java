@@ -14,8 +14,8 @@ class SimulationEngineTest {
         SimulationEngine engine = new SimulationEngine(moves,map,positions);
         engine.run();
         RectangularMap expected_map=new RectangularMap(10,5);
-        Animal animal1 =new Animal(expected_map,new Vector2d(2,0),MapDirection.SOUTH);
-        Animal animal2 =new Animal(expected_map,new Vector2d(3,4),MapDirection.NORTH);
+        Animal animal1 = new Animal(expected_map,new Vector2d(2,0),MapDirection.SOUTH);
+        Animal animal2 = new Animal(expected_map,new Vector2d(3,4),MapDirection.NORTH);
         assertEquals(expected_map.toString(),map.toString());
 
         MoveDirection[] moves2=new MoveDirection[]{MoveDirection.FORWARD,MoveDirection.BACKWARD,MoveDirection.RIGHT,MoveDirection.LEFT};
