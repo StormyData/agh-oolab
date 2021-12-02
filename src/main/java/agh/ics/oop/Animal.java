@@ -2,9 +2,8 @@ package agh.ics.oop;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
-public class Animal extends AbstractWorldMapElement implements IPositionChangedObservable {
+public class Animal extends BaseWorldMapElement implements IPositionChangedObservable {
     private MapDirection facing = MapDirection.NORTH;
     private List<IPositionChangeObserver> positionChangeObservers = new LinkedList<>();
     Animal(IWorldMap map)
@@ -12,7 +11,7 @@ public class Animal extends AbstractWorldMapElement implements IPositionChangedO
         this(map,new Vector2d(2,2),MapDirection.NORTH);
     }
 
-    Animal(IWorldMap map, Vector2d pos,MapDirection facing)
+    public Animal(IWorldMap map, Vector2d pos, MapDirection facing)
     {
         super(pos,map);
         if(map.objectAt(position) instanceof Grass grass)

@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class Grass extends AbstractWorldMapElement implements IPositionChangedObservable{
+public class Grass extends BaseWorldMapElement implements IPositionChangedObservable{
     static private final Random random =new Random();
     private List<IPositionChangeObserver> positionChangeObservers = new LinkedList<>();
     private int grassGenBound;

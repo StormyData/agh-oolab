@@ -1,9 +1,9 @@
 package agh.ics.oop;
 
-public class AbstractWorldMapElement {
+public class BaseWorldMapElement {
     protected Vector2d position;
     protected IWorldMap map;
-    AbstractWorldMapElement(Vector2d position,IWorldMap map)
+    BaseWorldMapElement(Vector2d position, IWorldMap map)
     {
         this.position=position;
         this.map = map;

@@ -9,17 +9,17 @@ public class MapBoundaryTest {
     {
         AbstractWorldMap map = new AbstractWorldMap() {
             @Override
-            protected Vector2d getUpperBound() {
+            public Vector2d getUpperBound() {
                 return null;
             }
 
             @Override
-            protected Vector2d getLowerBound() {
+            public Vector2d getLowerBound() {
                 return null;
             }
         };
-        AbstractWorldMapElement mapElement=new AbstractWorldMapElement(new Vector2d(2,1),map);
-        AbstractWorldMapElement mapElement2=new AbstractWorldMapElement(new Vector2d(-5,2),map);
+        BaseWorldMapElement mapElement=new BaseWorldMapElement(new Vector2d(2,1),map);
+        BaseWorldMapElement mapElement2=new BaseWorldMapElement(new Vector2d(-5,2),map);
         Animal animal = new Animal(map,new Vector2d(3,3),MapDirection.NORTH);
         MapBoundary mapBoundary=new MapBoundary();
         mapBoundary.addMapObject(mapElement);

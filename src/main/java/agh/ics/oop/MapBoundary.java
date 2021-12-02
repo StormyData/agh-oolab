@@ -2,7 +2,8 @@ package agh.ics.oop;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
-
+// ladniejsza implementacja z sorted multiset<Vector2d>
+// multiset np. na SotredMap<vector2d,int> gdzie int to ilosc wystapien
 public class MapBoundary {
 
     protected static class BoundaryXElement implements Comparable<BoundaryXElement>,IPositionChangeObserver
@@ -10,7 +11,7 @@ public class MapBoundary {
         private final int elementClassHashCode;
         private Vector2d pos;
         private final SortedSet<BoundaryXElement> treeSet;
-        BoundaryXElement(AbstractWorldMapElement element, SortedSet<BoundaryXElement> treeSet)
+        BoundaryXElement(BaseWorldMapElement element, SortedSet<BoundaryXElement> treeSet)
         {
             pos=element.getPosition();
             elementClassHashCode=element.getClass().hashCode();
@@ -44,7 +45,7 @@ public class MapBoundary {
         private final int elementClassHashCode;
         private Vector2d pos;
         private final SortedSet<BoundaryYElement> treeSet;
-        BoundaryYElement(AbstractWorldMapElement element, SortedSet<BoundaryYElement> treeSet)
+        BoundaryYElement(BaseWorldMapElement element, SortedSet<BoundaryYElement> treeSet)
         {
             pos=element.getPosition();
             elementClassHashCode=element.getClass().hashCode();
@@ -77,7 +78,7 @@ public class MapBoundary {
     SortedSet<BoundaryYElement> yPositions = new TreeSet<>();
 
 
-    public void addMapObject(AbstractWorldMapElement el)
+    public void addMapObject(BaseWorldMapElement el)
     {
         new BoundaryXElement(el, xPositions);
         new BoundaryYElement(el, yPositions);

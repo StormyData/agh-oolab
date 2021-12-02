@@ -23,7 +23,7 @@ public interface IWorldMap {
      * @param animal
      *            The animal to place on the map.
      */
-    void place(Animal animal) throws IllegalArgumentException;
+    boolean place(Animal animal);
 
     /**
      * Return true if given position on the map is occupied. Should not be

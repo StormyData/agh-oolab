@@ -12,10 +12,11 @@ public class GrassField extends AbstractWorldMap{
             tryGenerateGrass();
     }
     @Override
-    public void place(Animal animal)
+    public boolean place(Animal animal)
     {
         super.place(animal);
         mapBoundary.addMapObject(animal);
+        return true;
     }
     private void tryGenerateGrass() {
         Grass grass =new Grass(this, grassGenBound);
@@ -24,11 +25,11 @@ public class GrassField extends AbstractWorldMap{
         grass.addObserver(this);
     }
 
-    protected Vector2d getLowerBound()
+    public Vector2d getLowerBound()
     {
         return mapBoundary.getLowerLeft();
     }
-    protected Vector2d getUpperBound()
+    public Vector2d getUpperBound()
     {
         return mapBoundary.getUpperRight();
     }
