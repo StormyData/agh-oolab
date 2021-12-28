@@ -1,7 +1,4 @@
-out
-build
-.gradle
-build/*
-.gradle/*
-.idea
-.idea/*
+# Project exclude paths
+/.gradle/
+/build/
+/build/classes/java/main/
