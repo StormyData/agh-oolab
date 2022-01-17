@@ -32,7 +32,7 @@ public class Genotype {
         return MoveDirection.values()[gene];
     }
 
-    public Genotype combineWithAlpha(Genotype other, float alpha) {
+    public Genotype combineWithAlpha(Genotype other, float alpha) { // nie czytelniej zrobić metodę statyczną, przyjmującą dwa genotypy, albo konstruktor?
         if (alpha < 0 || alpha > 1)
             throw new IllegalArgumentException(
                     String.format("alpha must be between 0 and 1, got %f", alpha));

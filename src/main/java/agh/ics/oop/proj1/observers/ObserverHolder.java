@@ -13,7 +13,7 @@ public class ObserverHolder {
     private final Set<Class<? extends IObserver>> acceptedObservers = new HashSet<>();
 
     public ObserverHolder() {
-
+        // pusty konstruktor wymaga komentarza
     }
 
     public ObserverHolder(Set<Class<? extends IObserver>> acceptedObservers) {

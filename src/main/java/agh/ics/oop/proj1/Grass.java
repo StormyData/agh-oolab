@@ -11,12 +11,12 @@ public class Grass extends AbstractWorldMapElement {
     }
 
     @Override
-    public String getImageName() {
+    public String getImageName() {  // dobrze by to było przenieść do GUI
         return "gras.png";
     }
 
     @Override
-    public int displayPriority() {
+    public int displayPriority() {  //jw.
         return -1;
     }
 

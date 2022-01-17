@@ -55,7 +55,7 @@ public class Animal extends AbstractWorldMapElement implements IObservable {
         MapDirection newFacing = facing;
         switch (direction) {
             case FORWARD -> newPosition = position.add(facing.toUnitVector());
-            case RIGHT45 -> newFacing = facing.next();
+            case RIGHT45 -> newFacing = facing.next();  // nie dałoby się tego switch'a skrócić, np. kosztem pola w MoveDirection
             case RIGHT -> newFacing = facing.next(2);
             case RIGHT135 -> newFacing = facing.previous(3);
             case BACKWARD -> newPosition = position.add(facing.toUnitVector().opposite());
@@ -75,7 +75,7 @@ public class Animal extends AbstractWorldMapElement implements IObservable {
         }
     }
 
-    private void onFacingChanged(MapDirection newFacing) {
+    private void onFacingChanged(MapDirection newFacing) {  // warto tworzyć tyle observer'ów? może jeden AnimalStateChangedObserver i kilka metod do wywołania?
         observers.notifyObservers(IFacingChangedObserver.class, observer -> observer.facingChanged(newFacing));
     }
 
@@ -106,7 +106,7 @@ public class Animal extends AbstractWorldMapElement implements IObservable {
         return genotype;
     }
 
-    public void reproduce(Animal other) {
+    public void reproduce(Animal other) {   // tu też sugeruję statyczną
         float alpha = (energy * 1.0f) / (energy + other.energy);
 
         int energyFromThis = energy / 4;
