@@ -1,1 +1,8 @@
 Nie działa: Exception in thread "JavaFX Application Thread" java.util.MissingResourceException: Can't find bundle for base name Strings, locale en_US
+
+Kilkukrotne kliknięcie zwierzęcia powoduje otwarcie wielu kart, a w efekcie druga mapa odjeżdża gdzieś daleko
+Brak skali na osiach wykresów
+
+Efekt kliknięcia "Zmień ustawienia symulacji"
+Exception in thread "JavaFX Application Thread" java.lang.ClassCastException: class java.lang.Double cannot be cast to class java.lang.Integer (java.lang.Double and java.lang.Integer are in module java.base of loader 'bootstrap')
+        at agh.ics.oop.proj1.gui.SimulationOptionsSettingsFieldsPane.getIntValue(SimulationOptionsSettingsFieldsPane.java:75)
