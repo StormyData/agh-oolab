@@ -5,7 +5,8 @@ import agh.ics.oop.proj2.Side;
 
 import java.util.List;
 
-public interface IGameStateChangedObserver{
+public interface IGameStateChangedObserver {
     void gameEnded(Side sideWon);
+
     void highlightChanged(List<HighlightData> newHighlights);
 }

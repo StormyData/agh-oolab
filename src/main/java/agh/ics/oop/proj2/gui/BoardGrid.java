@@ -7,6 +7,7 @@ import agh.ics.oop.proj2.Side;
 import agh.ics.oop.proj2.observers.IBoardStateChangedObserver;
 import agh.ics.oop.proj2.observers.ICellClickedObserver;
 import agh.ics.oop.proj2.observers.IGameStateChangedObserver;
+import com.beust.jcommander.internal.Nullable;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.layout.GridPane;
@@ -17,56 +18,66 @@ import java.util.List;
 import java.util.Set;
 
 
-public class BoardGrid extends GridPane implements IBoardStateChangedObserver, IGameStateChangedObserver{
+public class BoardGrid extends GridPane implements IBoardStateChangedObserver, IGameStateChangedObserver {
+    public static final Vector2d ORIGIN = new Vector2d(0, 0);
     final Set<ICellClickedObserver> observers = new HashSet<>();
-    final BoardSquare[][] squares = new BoardSquare[8][8];
-    public BoardGrid(Board board)
-    {
+    final BoardCell[][] squares = new BoardCell[Board.SIZE.x][Board.SIZE.y];
 
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                Side side = board.getSideAt(new Vector2d(i,j));
-                squares[i][j] = new BoardSquare(side, new Vector2d(i,j),this);
+    public BoardGrid(Board board) {
+
+        for (int i = 0; i < Board.SIZE.x; i++) {
+            for (int j = 0; j < Board.SIZE.y; j++) {
+                Side side = board.getSideAt(new Vector2d(i, j));
+
+                squares[i][j] = new BoardCell(side, new Vector2d(i, j), this::onCellClicked);
+
                 GridPane.setHalignment(squares[i][j], HPos.CENTER);
                 GridPane.setValignment(squares[i][j], VPos.CENTER);
-                add(squares[i][j],i,j);
+
+                add(squares[i][j], i, j);
             }
         }
         board.addObserver(this);
         setGridLinesVisible(true);
     }
-    public void setHighlighted(List<HighlightData> newHighlighted)
-    {
+
+    public void setHighlighted(List<HighlightData> newHighlighted) {
         setHighlighted(Color.TRANSPARENT);
         for (HighlightData data : newHighlighted) {
-            Color color = switch (data.type())
-                    {
-                        case PATH -> Color.CORAL;
-                        case BEGIN -> Color.AQUA;
-                        case COMMIT -> Color.GREEN;
-                        case RESET -> Color.RED;
-                    };
-            setHighlighted(color,data.pos());
+            if(!inBounds(data.pos()))
+                throw new IllegalArgumentException(String.format("position %s is out of bounds",data.pos()));
+            Color color = switch (data.type()) {
+                case PATH -> Color.CORAL;
+                case BEGIN -> Color.AQUA;
+                case COMMIT -> Color.GREEN;
+                case RESET -> Color.RED;
+            };
+            setHighlighted(color, data.pos());
         }
     }
 
-    public void setSide(Vector2d pos, Side side)
-    {
+    public void setSide(Vector2d pos,@Nullable Side side) {
+        if(!inBounds(pos))
+            throw new IllegalArgumentException(String.format("position %s is out of bounds",pos));
         squares[pos.x][pos.y].setSide(side);
     }
 
-    public void onSquareClicked(Vector2d pos) {
+    private boolean inBounds(Vector2d pos) {
+        return ORIGIN.precedes(pos) && Board.SIZE_MINUS_1_1.follows(pos);
+    }
+
+    private void onCellClicked(Vector2d pos) {
         observers.forEach(observer -> observer.cellClicked(pos));
     }
 
     @Override
     public void boardPieceAdded(Vector2d pos, Side side) {
-        setSide(pos,side);
+        setSide(pos, side);
     }
 
     @Override
     public void boardPieceRemoved(Vector2d pos) {
-        setSide(pos,null);
+        setSide(pos, null);
     }
 
     public void addObserver(ICellClickedObserver observer) {
@@ -88,14 +99,13 @@ public class BoardGrid extends GridPane implements IBoardStateChangedObserver, I
     }
 
 
-    private void setHighlighted(Color color, Vector2d pos)
-    {
+    private void setHighlighted(Color color, Vector2d pos) {
         squares[pos.x][pos.y].setHighlighted(color);
     }
-    private void setHighlighted(Color color)
-    {
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
+
+    private void setHighlighted(Color color) {
+        for (int i = 0; i < Board.SIZE.x; i++) {
+            for (int j = 0; j < Board.SIZE.y; j++) {
                 squares[i][j].setHighlighted(color);
             }
         }

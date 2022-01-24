@@ -1,11 +1,11 @@
-package agh.ics.oop.proj2.statemachine;
+package agh.ics.oop.proj2;
 
 import agh.ics.oop.Vector2d;
-import agh.ics.oop.proj2.Board;
-import agh.ics.oop.proj2.HighlightData;
-import agh.ics.oop.proj2.Side;
 import agh.ics.oop.proj2.observers.ICellClickedObserver;
 import agh.ics.oop.proj2.observers.IGameStateChangedObserver;
+import agh.ics.oop.proj2.stateMachineStates.AbstractMachineState;
+import agh.ics.oop.proj2.stateMachineStates.GameEndedState;
+import agh.ics.oop.proj2.stateMachineStates.StartState;
 
 import java.util.HashSet;
 import java.util.List;
@@ -16,16 +16,18 @@ public class StateMachine implements ICellClickedObserver {
     private AbstractMachineState currentState;
     private List<HighlightData> highlighted;
     private boolean running = true;
-    public StateMachine(Board board)
-    {
+
+    public StateMachine(Board board) {
         currentState = new StartState(board);
         updateState();
     }
 
     private void updateState() {
-        while (currentState.nextState() != currentState)
+        AbstractMachineState lastState;
+        do {
+            lastState = currentState;
             currentState = currentState.nextState();
-
+        } while (lastState != currentState);
         highlighted = currentState.getCellsToHighlight();
         onHighlightChanged(highlighted);
         if (currentState instanceof GameEndedState endState) {
@@ -43,7 +45,7 @@ public class StateMachine implements ICellClickedObserver {
         running = false;
     }
 
-    public List<HighlightData> getHighlighted(){
+    public List<HighlightData> getHighlighted() {
         return highlighted;
     }
 
@@ -57,7 +59,7 @@ public class StateMachine implements ICellClickedObserver {
 
     @Override
     public void cellClicked(Vector2d pos) {
-        if(!running)
+        if (!running)
             return;
         currentState.cellClicked(pos);
         updateState();
