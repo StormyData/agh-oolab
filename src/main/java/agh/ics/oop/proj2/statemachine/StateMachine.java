@@ -15,6 +15,7 @@ public class StateMachine implements ICellClickedObserver {
     private final Set<IGameStateChangedObserver> observers = new HashSet<>();
     private AbstractMachineState currentState;
     private List<HighlightData> highlighted;
+    private boolean running = true;
     public StateMachine(Board board)
     {
         currentState = new StartState(board);
@@ -23,10 +24,8 @@ public class StateMachine implements ICellClickedObserver {
 
     private void updateState() {
         while (currentState.nextState() != currentState)
-        {
             currentState = currentState.nextState();
-            System.out.printf("changing state to : %s\n",currentState);
-        }
+
         highlighted = currentState.getCellsToHighlight();
         onHighlightChanged(highlighted);
         if (currentState instanceof GameEndedState endState) {
@@ -41,6 +40,7 @@ public class StateMachine implements ICellClickedObserver {
 
     private void onGameEnded(Side sideWon) {
         observers.forEach(observer -> observer.gameEnded(sideWon));
+        running = false;
     }
 
     public List<HighlightData> getHighlighted(){
@@ -57,6 +57,8 @@ public class StateMachine implements ICellClickedObserver {
 
     @Override
     public void cellClicked(Vector2d pos) {
+        if(!running)
+            return;
         currentState.cellClicked(pos);
         updateState();
     }
