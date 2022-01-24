@@ -2,17 +2,19 @@ package agh.ics.oop.proj2.statemachine;
 
 import agh.ics.oop.Vector2d;
 import agh.ics.oop.proj2.Board;
+import agh.ics.oop.proj2.HighlightData;
 import agh.ics.oop.proj2.Side;
 import agh.ics.oop.proj2.observers.ICellClickedObserver;
 import agh.ics.oop.proj2.observers.IGameStateChangedObserver;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class StateMachine implements ICellClickedObserver {
     private final Set<IGameStateChangedObserver> observers = new HashSet<>();
     private AbstractMachineState currentState;
-    private Vector2d[] highlighted;
+    private List<HighlightData> highlighted;
     public StateMachine(Board board)
     {
         currentState = new StartState(board);
@@ -33,7 +35,7 @@ public class StateMachine implements ICellClickedObserver {
     }
 
 
-    private void onHighlightChanged(Vector2d[] highlighted) {
+    private void onHighlightChanged(List<HighlightData> highlighted) {
         observers.forEach(observer -> observer.highlightChanged(highlighted));
     }
 
@@ -41,7 +43,7 @@ public class StateMachine implements ICellClickedObserver {
         observers.forEach(observer -> observer.gameEnded(sideWon));
     }
 
-    public Vector2d[] getHighlighted(){
+    public List<HighlightData> getHighlighted(){
         return highlighted;
     }
 

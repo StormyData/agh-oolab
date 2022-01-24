@@ -2,18 +2,25 @@ package agh.ics.oop.proj2.statemachine;
 
 import agh.ics.oop.Vector2d;
 import agh.ics.oop.proj2.Board;
+import agh.ics.oop.proj2.HighlightData;
 import agh.ics.oop.proj2.Side;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PieceSelectedState extends AbstractMachineState {
     private final Side side;
 
     private enum MoveType {
-        JUMP,
-        MOVE,
-        REVERT
+        JUMP(HighlightData.HighlightType.PATH),
+        MOVE(HighlightData.HighlightType.PATH),
+        REVERT(HighlightData.HighlightType.RESET);
+        public final HighlightData.HighlightType highlightType;
+
+        MoveType(HighlightData.HighlightType highlightType) {
+            this.highlightType = highlightType;
+        }
     }
     private final Vector2d selectedPos;
     private static final Vector2d[] moveOffsets = {new Vector2d(-1,0),new Vector2d(1,0),new Vector2d(0,1),new Vector2d(0,-1)};
@@ -46,7 +53,10 @@ public class PieceSelectedState extends AbstractMachineState {
     }
 
     @Override
-    public Vector2d[] getCellsToHighlight() {
-        return moves.keySet().toArray(new Vector2d[0]);
+    public List<HighlightData> getCellsToHighlight() {
+        return moves.entrySet()
+                .stream()
+                .map(entry -> new HighlightData(entry.getKey(),entry.getValue().highlightType))
+                .toList();
     }
 }

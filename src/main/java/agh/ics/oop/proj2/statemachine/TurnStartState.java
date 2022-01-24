@@ -2,6 +2,7 @@ package agh.ics.oop.proj2.statemachine;
 
 import agh.ics.oop.Vector2d;
 import agh.ics.oop.proj2.Board;
+import agh.ics.oop.proj2.HighlightData;
 import agh.ics.oop.proj2.Side;
 
 import java.util.LinkedList;
@@ -9,7 +10,7 @@ import java.util.List;
 
 public class TurnStartState extends AbstractMachineState {
     private final Side side;
-    private final Vector2d[] highlightedCells;
+    private final List<HighlightData> highlightedCells;
 
     public TurnStartState(Board board, Side side)
     {
@@ -24,7 +25,7 @@ public class TurnStartState extends AbstractMachineState {
                     highlightedCellsList.add(pos);
             }
         }
-        highlightedCells = highlightedCellsList.toArray(new Vector2d[0]);
+        highlightedCells = highlightedCellsList.stream().map(pos -> new HighlightData(pos, HighlightData.HighlightType.BEGIN)).toList();
     }
 
     @Override
@@ -35,7 +36,7 @@ public class TurnStartState extends AbstractMachineState {
     }
 
     @Override
-    public Vector2d[] getCellsToHighlight() {
+    public List<HighlightData> getCellsToHighlight() {
 
         return highlightedCells;
     }

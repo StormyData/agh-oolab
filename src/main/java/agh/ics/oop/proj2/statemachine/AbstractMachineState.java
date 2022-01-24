@@ -2,6 +2,10 @@ package agh.ics.oop.proj2.statemachine;
 
 import agh.ics.oop.Vector2d;
 import agh.ics.oop.proj2.Board;
+import agh.ics.oop.proj2.HighlightData;
+
+import java.util.Collections;
+import java.util.List;
 
 public abstract class AbstractMachineState {
     protected AbstractMachineState nextState = this;
@@ -19,9 +23,9 @@ public abstract class AbstractMachineState {
     {
 
     }
-    public Vector2d[] getCellsToHighlight()
+    public List<HighlightData> getCellsToHighlight()
     {
-        return new Vector2d[0];
+        return Collections.emptyList();
     }
 
 

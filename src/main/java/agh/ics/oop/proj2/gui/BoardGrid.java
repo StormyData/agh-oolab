@@ -2,6 +2,7 @@ package agh.ics.oop.proj2.gui;
 
 import agh.ics.oop.Vector2d;
 import agh.ics.oop.proj2.Board;
+import agh.ics.oop.proj2.HighlightData;
 import agh.ics.oop.proj2.Side;
 import agh.ics.oop.proj2.observers.IBoardStateChangedObserver;
 import agh.ics.oop.proj2.observers.ICellClickedObserver;
@@ -12,6 +13,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -33,11 +35,18 @@ public class BoardGrid extends GridPane implements IBoardStateChangedObserver, I
         board.addObserver(this);
         setGridLinesVisible(true);
     }
-    public void setHighlighted(Vector2d[] newHighlighted)
+    public void setHighlighted(List<HighlightData> newHighlighted)
     {
         setHighlighted(Color.TRANSPARENT);
-        for (Vector2d pos : newHighlighted) {
-            setHighlighted(Color.CORAL,pos);
+        for (HighlightData data : newHighlighted) {
+            Color color = switch (data.type())
+                    {
+                        case PATH -> Color.CORAL;
+                        case BEGIN -> Color.AQUA;
+                        case COMMIT -> Color.GREEN;
+                        case RESET -> Color.RED;
+                    };
+            setHighlighted(color,data.pos());
         }
     }
 
@@ -74,7 +83,7 @@ public class BoardGrid extends GridPane implements IBoardStateChangedObserver, I
     }
 
     @Override
-    public void highlightChanged(Vector2d[] newHighlights) {
+    public void highlightChanged(List<HighlightData> newHighlights) {
         setHighlighted(newHighlights);
     }
 
