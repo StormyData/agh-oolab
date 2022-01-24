@@ -5,13 +5,14 @@ import agh.ics.oop.proj2.Side;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import org.jetbrains.annotations.Nullable;
 
 
-public class BoardSquare extends Pane {
-    private final Circle circle = new Circle();
+public class BoardSquare extends VBox {
+    private final Circle circle = new Circle(50);
     public BoardSquare(@Nullable Side side, Vector2d pos, BoardGrid grid)
     {
         Color circleColor = getSideColor(side);

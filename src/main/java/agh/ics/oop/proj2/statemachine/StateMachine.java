@@ -21,7 +21,10 @@ public class StateMachine implements IObservable, ICellClickedObserver {
 
     private void updateState() {
         while (currentState.nextState() != currentState)
+        {
             currentState = currentState.nextState();
+            System.out.printf("changing state to : %s\n",currentState);
+        }
         highlighted = currentState.getCellsToHighlight();
         onHighlightChanged(highlighted);
         if (currentState instanceof GameEndedState endState) {
@@ -56,9 +59,5 @@ public class StateMachine implements IObservable, ICellClickedObserver {
     public void cellClicked(Vector2d pos) {
         currentState.cellClicked(pos);
         updateState();
-    }
-
-    public void revert() {
-        currentState = currentState.revertState();
     }
 }

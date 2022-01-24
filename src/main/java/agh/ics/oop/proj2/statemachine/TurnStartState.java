@@ -13,9 +13,8 @@ public class TurnStartState extends AbstractMachineState {
 
     public TurnStartState(Board board, Side side)
     {
-        super(board,null);
+        super(board);
         this.side=side;
-        stateToRevertTo = this;
 
         List<Vector2d> highlightedCellsList = new LinkedList<>();
         for (int i = 0; i < 8; i++) {
@@ -32,7 +31,7 @@ public class TurnStartState extends AbstractMachineState {
     public void cellClicked(Vector2d pos) {
         if(board.getSideAt(pos) != side)
             return;
-        nextState = new PieceSelectedState(board,new TurnStartState(board,side), side, pos);
+        nextState = new PieceSelectedState(board, side, pos);
     }
 
     @Override

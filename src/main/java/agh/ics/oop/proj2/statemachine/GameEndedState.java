@@ -6,7 +6,7 @@ import agh.ics.oop.proj2.Side;
 public class GameEndedState extends AbstractMachineState {
     public final Side sideWon;
     public GameEndedState(Board board, Side sideWon) {
-        super(board,null);
+        super(board);
         this.sideWon = sideWon;
     }
 }

@@ -7,8 +7,7 @@ import agh.ics.oop.proj2.Side;
 public class StartState extends AbstractMachineState {
     public StartState(Board board)
     {
-        super(board,null);
-        stateToRevertTo = this;
+        super(board);
         nextState = new TurnStartState(board, Side.PLAYER_BLACK);
 
         for (int i = 0; i < 8; i++) {

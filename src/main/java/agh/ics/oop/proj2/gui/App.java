@@ -22,7 +22,8 @@ public class App extends Application {
         stateMachine.addObserver(grid);
         grid.addObserver(stateMachine);
 
-
+        primaryStage.setTitle("Skoczki");
         primaryStage.setScene(new Scene(grid));
+        primaryStage.show();
     }
 }

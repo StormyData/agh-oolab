@@ -5,8 +5,8 @@ import agh.ics.oop.proj2.Board;
 import agh.ics.oop.proj2.Side;
 
 public class CheckBoardStateState extends AbstractMachineState {
-    public CheckBoardStateState(Board board, AbstractMachineState stateToRevertTo, Side side) {
-        super(board,stateToRevertTo);
+    public CheckBoardStateState(Board board, Side side) {
+        super(board);
         if(checkBlackWon())
             nextState = new GameEndedState(board, Side.PLAYER_BLACK);
         else if(checkRedWon())

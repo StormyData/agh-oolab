@@ -9,6 +9,8 @@ import agh.ics.oop.proj2.Side;
 import agh.ics.oop.proj2.observers.IBoardStateChangedObserver;
 import agh.ics.oop.proj2.observers.ICellClickedObserver;
 import agh.ics.oop.proj2.observers.IGameStateChangedObserver;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
@@ -22,10 +24,13 @@ public class BoardGrid extends GridPane implements IBoardStateChangedObserver, I
             for (int j = 0; j < 8; j++) {
                 Side side = board.getSideAt(new Vector2d(i,j));
                 squares[i][j] = new BoardSquare(side, new Vector2d(i,j),this);
+                GridPane.setHalignment(squares[i][j], HPos.CENTER);
+                GridPane.setValignment(squares[i][j], VPos.CENTER);
                 add(squares[i][j],i,j);
             }
         }
         board.addObserver(this);
+        setGridLinesVisible(true);
     }
     public void setHighlighted(Color color, Vector2d pos)
     {

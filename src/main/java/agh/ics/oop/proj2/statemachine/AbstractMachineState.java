@@ -6,11 +6,8 @@ import agh.ics.oop.proj2.Board;
 public abstract class AbstractMachineState {
     protected AbstractMachineState nextState = this;
     protected final Board board;
-    protected AbstractMachineState stateToRevertTo = this;
 
-    public AbstractMachineState(Board board, AbstractMachineState stateToRevertTo) {
-        if(stateToRevertTo != null)
-            this.stateToRevertTo = stateToRevertTo;
+    public AbstractMachineState(Board board) {
         this.board = board;
     }
 
@@ -25,10 +22,6 @@ public abstract class AbstractMachineState {
     public Vector2d[] getCellsToHighlight()
     {
         return new Vector2d[0];
-    }
-    public AbstractMachineState revertState()
-    {
-        return stateToRevertTo;
     }
 
 

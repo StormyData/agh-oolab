@@ -12,7 +12,8 @@ public class JumpState extends AbstractMachineState {
 
     private enum Type{
         JUMP,
-        COMMIT
+        COMMIT,
+        ROLLBACK
     }
 
     private static final Vector2d[] moveOffsets = {new Vector2d(-1,0),new Vector2d(1,0),new Vector2d(0,1),new Vector2d(0,-1)};
@@ -21,8 +22,8 @@ public class JumpState extends AbstractMachineState {
     private final Vector2d startPos;
     private final Vector2d nextPos;
 
-    public JumpState(Board board, Vector2d startPos, Vector2d nextPos, AbstractMachineState stateToRevertTo, Side side) {
-        super(board,stateToRevertTo);
+    public JumpState(Board board, Vector2d startPos, Vector2d nextPos, Side side) {
+        super(board);
         this.startPos = startPos;
         this.nextPos = nextPos;
         this.side = side;
@@ -30,10 +31,12 @@ public class JumpState extends AbstractMachineState {
         for (Vector2d moveOffset : moveOffsets) {
             Vector2d movePos = nextPos.add(moveOffset);
             Vector2d jumpPos = movePos.add(moveOffset);
-            if(board.isOnBoard(movePos) && board.getSideAt(movePos) != null &&
+            if(movePos != startPos &&
+                    board.isOnBoard(movePos) && board.getSideAt(movePos) != null &&
                     board.isOnBoard(jumpPos) && board.getSideAt(jumpPos) == null)
                 moves.put(jumpPos, Type.JUMP);
         }
+        moves.put(startPos,Type.ROLLBACK);
         moves.put(nextPos,Type.COMMIT);
     }
 
@@ -44,8 +47,9 @@ public class JumpState extends AbstractMachineState {
             return;
         nextState = switch (moves.get(pos))
                 {
-                    case JUMP -> new JumpState(board,startPos,pos,stateToRevertTo, side);
-                    case COMMIT -> new CommitMoveState(board,stateToRevertTo,startPos,nextPos,side);
+                    case JUMP -> new JumpState(board,startPos,pos, side);
+                    case COMMIT -> new CommitMoveState(board,startPos,nextPos,side);
+                    case ROLLBACK -> new TurnStartState(board,side);
                 };
     }
 

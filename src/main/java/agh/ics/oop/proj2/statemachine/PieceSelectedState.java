@@ -12,13 +12,14 @@ public class PieceSelectedState extends AbstractMachineState {
 
     private enum MoveType {
         JUMP,
-        MOVE
+        MOVE,
+        REVERT
     }
     private final Vector2d selectedPos;
     private static final Vector2d[] moveOffsets = {new Vector2d(-1,0),new Vector2d(1,0),new Vector2d(0,1),new Vector2d(0,-1)};
     private final Map<Vector2d, MoveType> moves = new HashMap<>();
-    public PieceSelectedState(Board board, AbstractMachineState stateToRevertTo, Side side, Vector2d selectedPos) {
-        super(board,stateToRevertTo);
+    public PieceSelectedState(Board board, Side side, Vector2d selectedPos) {
+        super(board);
         this.side = side;
         this.selectedPos = selectedPos;
         for (Vector2d moveOffset : moveOffsets) {
@@ -29,6 +30,7 @@ public class PieceSelectedState extends AbstractMachineState {
             else if(board.isOnBoard(jumpPos) && board.getSideAt(jumpPos) == null)
                 moves.put(jumpPos, MoveType.JUMP);
         }
+        moves.put(selectedPos,MoveType.REVERT);
     }
 
     @Override
@@ -37,8 +39,9 @@ public class PieceSelectedState extends AbstractMachineState {
             return;
         nextState = switch (moves.get(pos))
         {
-            case JUMP -> new JumpState(board,selectedPos,pos, stateToRevertTo, side);
-            case MOVE -> new MoveState(board,selectedPos,pos, stateToRevertTo, side);
+            case JUMP -> new JumpState(board,selectedPos,pos, side);
+            case MOVE -> new MoveState(board,selectedPos,pos, side);
+            case REVERT -> new TurnStartState(board,side);
         };
     }
 
