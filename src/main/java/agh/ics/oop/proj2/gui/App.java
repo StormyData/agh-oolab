@@ -1,6 +1,7 @@
 package agh.ics.oop.proj2.gui;
 
 import agh.ics.oop.proj2.Board;
+import agh.ics.oop.proj2.statemachine.StateMachine;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -14,7 +15,13 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage){
         Board board = new Board();
+        StateMachine stateMachine = new StateMachine(board);
+
+
         BoardGrid grid = new BoardGrid(board);
+        stateMachine.addObserver(grid);
+        grid.addObserver(stateMachine);
+
 
         primaryStage.setScene(new Scene(grid));
     }
