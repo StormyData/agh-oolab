@@ -1,13 +1,13 @@
 package agh.ics.oop.proj2;
 
 import agh.ics.oop.Vector2d;
-import agh.ics.oop.observers.IObservable;
-import agh.ics.oop.observers.IObserver;
-import agh.ics.oop.observers.ObserverHolder;
 import agh.ics.oop.proj2.observers.IBoardStateChangedObserver;
 
-public class Board implements IObservable {
-    private final ObserverHolder observers = new ObserverHolder(IBoardStateChangedObserver.class);
+import java.util.HashSet;
+import java.util.Set;
+
+public class Board{
+    private final Set<IBoardStateChangedObserver> observers = new HashSet<>();
 
     private static final Vector2d origin = new Vector2d(0,0);
     private final BoardPiece[][] board = new BoardPiece[8][8];
@@ -55,26 +55,24 @@ public class Board implements IObservable {
     }
     public boolean isOnBoard(Vector2d pos)
     {
-        return origin.precedes(pos)  && size.follows(pos);
+        return origin.precedes(pos) && size.follows(pos);
     }
 
     private void onBoardPieceAdded(Vector2d pos)
     {
-        observers.notifyObservers(IBoardStateChangedObserver.class,observer -> observer.boardPieceAdded(pos,getSideAt(pos) ));
+        observers.forEach(observer -> observer.boardPieceAdded(pos,getSideAt(pos)));
     }
 
     private void onBoardPieceRemoved(Vector2d pos)
     {
-        observers.notifyObservers(IBoardStateChangedObserver.class,observer -> observer.boardPieceRemoved(pos));
+        observers.forEach(observer -> observer.boardPieceRemoved(pos));
     }
 
-    @Override
-    public void addObserver(IObserver observer) {
-        observers.addObserver(observer);
+    public void addObserver(IBoardStateChangedObserver observer) {
+        observers.add(observer);
     }
 
-    @Override
-    public void removeObserver(IObserver observer) {
-        observers.removeObserver(observer);
+    public void removeObserver(IBoardStateChangedObserver observer) {
+        observers.remove(observer);
     }
 }

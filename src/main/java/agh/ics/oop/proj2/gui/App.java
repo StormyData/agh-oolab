@@ -6,6 +6,8 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.Arrays;
+
 public class App extends Application {
     public static void main(String[] args)
     {
@@ -15,12 +17,12 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage){
         Board board = new Board();
-        StateMachine stateMachine = new StateMachine(board);
-
-
         BoardGrid grid = new BoardGrid(board);
+        StateMachine stateMachine = new StateMachine(board);
         stateMachine.addObserver(grid);
         grid.addObserver(stateMachine);
+
+        grid.setHighlighted(stateMachine.getHighlighted());
 
         primaryStage.setTitle("Skoczki");
         primaryStage.setScene(new Scene(grid));

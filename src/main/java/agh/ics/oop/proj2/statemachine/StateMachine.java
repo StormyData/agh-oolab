@@ -1,16 +1,16 @@
 package agh.ics.oop.proj2.statemachine;
 
 import agh.ics.oop.Vector2d;
-import agh.ics.oop.observers.IObservable;
-import agh.ics.oop.observers.IObserver;
-import agh.ics.oop.observers.ObserverHolder;
 import agh.ics.oop.proj2.Board;
 import agh.ics.oop.proj2.Side;
 import agh.ics.oop.proj2.observers.ICellClickedObserver;
 import agh.ics.oop.proj2.observers.IGameStateChangedObserver;
 
-public class StateMachine implements IObservable, ICellClickedObserver {
-    private final ObserverHolder observers = new ObserverHolder(IGameStateChangedObserver.class);
+import java.util.HashSet;
+import java.util.Set;
+
+public class StateMachine implements ICellClickedObserver {
+    private final Set<IGameStateChangedObserver> observers = new HashSet<>();
     private AbstractMachineState currentState;
     private Vector2d[] highlighted;
     public StateMachine(Board board)
@@ -34,25 +34,23 @@ public class StateMachine implements IObservable, ICellClickedObserver {
 
 
     private void onHighlightChanged(Vector2d[] highlighted) {
-        observers.notifyObservers(IGameStateChangedObserver.class,observer -> observer.highlightChanged(highlighted));
+        observers.forEach(observer -> observer.highlightChanged(highlighted));
     }
 
     private void onGameEnded(Side sideWon) {
-        observers.notifyObservers(IGameStateChangedObserver.class,observer -> observer.gameEnded(sideWon));
+        observers.forEach(observer -> observer.gameEnded(sideWon));
     }
 
     public Vector2d[] getHighlighted(){
         return highlighted;
     }
 
-    @Override
-    public void addObserver(IObserver observer) {
-        observers.addObserver(observer);
+    public void addObserver(IGameStateChangedObserver observer) {
+        observers.add(observer);
     }
 
-    @Override
-    public void removeObserver(IObserver observer) {
-        observers.removeObserver(observer);
+    public void removeObserver(IGameStateChangedObserver observer) {
+        observers.remove(observer);
     }
 
     @Override

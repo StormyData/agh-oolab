@@ -1,9 +1,6 @@
 package agh.ics.oop.proj2.gui;
 
 import agh.ics.oop.Vector2d;
-import agh.ics.oop.observers.IObservable;
-import agh.ics.oop.observers.IObserver;
-import agh.ics.oop.observers.ObserverHolder;
 import agh.ics.oop.proj2.Board;
 import agh.ics.oop.proj2.Side;
 import agh.ics.oop.proj2.observers.IBoardStateChangedObserver;
@@ -14,12 +11,16 @@ import javafx.geometry.VPos;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
+import java.util.HashSet;
+import java.util.Set;
 
-public class BoardGrid extends GridPane implements IBoardStateChangedObserver, IGameStateChangedObserver, IObservable {
-    final ObserverHolder observers = new ObserverHolder(ICellClickedObserver.class);
+
+public class BoardGrid extends GridPane implements IBoardStateChangedObserver, IGameStateChangedObserver{
+    final Set<ICellClickedObserver> observers = new HashSet<>();
     final BoardSquare[][] squares = new BoardSquare[8][8];
     public BoardGrid(Board board)
     {
+
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Side side = board.getSideAt(new Vector2d(i,j));
@@ -32,16 +33,11 @@ public class BoardGrid extends GridPane implements IBoardStateChangedObserver, I
         board.addObserver(this);
         setGridLinesVisible(true);
     }
-    public void setHighlighted(Color color, Vector2d pos)
+    public void setHighlighted(Vector2d[] newHighlighted)
     {
-        squares[pos.x][pos.y].setHighlighted(color);
-    }
-    public void setHighlighted(Color color)
-    {
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                squares[i][j].setHighlighted(color);
-            }
+        setHighlighted(Color.TRANSPARENT);
+        for (Vector2d pos : newHighlighted) {
+            setHighlighted(Color.CORAL,pos);
         }
     }
 
@@ -51,7 +47,7 @@ public class BoardGrid extends GridPane implements IBoardStateChangedObserver, I
     }
 
     public void onSquareClicked(Vector2d pos) {
-        observers.notifyObservers(ICellClickedObserver.class,observer -> observer.cellClicked(pos));
+        observers.forEach(observer -> observer.cellClicked(pos));
     }
 
     @Override
@@ -64,14 +60,12 @@ public class BoardGrid extends GridPane implements IBoardStateChangedObserver, I
         setSide(pos,null);
     }
 
-    @Override
-    public void addObserver(IObserver observer) {
-        observers.addObserver(observer);
+    public void addObserver(ICellClickedObserver observer) {
+        observers.add(observer);
     }
 
-    @Override
-    public void removeObserver(IObserver observer) {
-        observers.removeObserver(observer);
+    public void removeObserver(ICellClickedObserver observer) {
+        observers.remove(observer);
     }
 
     @Override
@@ -81,10 +75,20 @@ public class BoardGrid extends GridPane implements IBoardStateChangedObserver, I
 
     @Override
     public void highlightChanged(Vector2d[] newHighlights) {
-        setHighlighted(Color.TRANSPARENT);
-        for (Vector2d pos : newHighlights) {
-            setHighlighted(Color.CORAL,pos);
-        }
+        setHighlighted(newHighlights);
     }
 
+
+    private void setHighlighted(Color color, Vector2d pos)
+    {
+        squares[pos.x][pos.y].setHighlighted(color);
+    }
+    private void setHighlighted(Color color)
+    {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                squares[i][j].setHighlighted(color);
+            }
+        }
+    }
 }
