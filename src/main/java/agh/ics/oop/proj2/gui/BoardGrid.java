@@ -8,11 +8,12 @@ import agh.ics.oop.proj2.Board;
 import agh.ics.oop.proj2.Side;
 import agh.ics.oop.proj2.observers.IBoardStateChangedObserver;
 import agh.ics.oop.proj2.observers.ICellClickedObserver;
+import agh.ics.oop.proj2.observers.IGameStateChangedObserver;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
 
-public class BoardGrid extends GridPane implements IBoardStateChangedObserver, IObservable {
+public class BoardGrid extends GridPane implements IBoardStateChangedObserver, IGameStateChangedObserver, IObservable {
     final ObserverHolder observers = new ObserverHolder(ICellClickedObserver.class);
     final BoardSquare[][] squares = new BoardSquare[8][8];
     public BoardGrid(Board board)
@@ -68,5 +69,17 @@ public class BoardGrid extends GridPane implements IBoardStateChangedObserver, I
         observers.removeObserver(observer);
     }
 
+    @Override
+    public void gameEnded(Side sideWon) {
+        //do nothing
+    }
+
+    @Override
+    public void highlightChanged(Vector2d[] newHighlights) {
+        setHighlighted(Color.TRANSPARENT);
+        for (Vector2d pos : newHighlights) {
+            setHighlighted(Color.CORAL,pos);
+        }
+    }
 
 }
