@@ -17,7 +17,7 @@ javafx {
 }
 
 application {
-    getMainClass().set('agh.ics.oop.proj1.gui.App')
+    getMainClass().set('agh.ics.oop.proj2.gui.App')
 }
 
 tasks.withType(JavaCompile) {
@@ -28,7 +28,8 @@ tasks.withType(JavaCompile) {
 
 dependencies {
     implementation 'org.junit.jupiter:junit-jupiter:5.8.2'
-    implementation 'org.testng:testng:7.4.0'
+    implementation 'org.testng:testng:7.5'
+    implementation 'org.jetbrains:annotations:22.0.0'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 }
