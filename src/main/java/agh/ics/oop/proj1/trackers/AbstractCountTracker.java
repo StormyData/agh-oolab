@@ -35,7 +35,7 @@ public abstract class AbstractCountTracker implements IWorldMapElementRemovedObs
     }
 
     @Override
-    public double getValue() {
+    public Number getValue() {
         return getCount();
     }
 }

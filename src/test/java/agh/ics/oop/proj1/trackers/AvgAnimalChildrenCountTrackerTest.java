@@ -12,14 +12,14 @@ class AvgAnimalChildrenCountTrackerTest {
     void getValue() {
         AbstractNonFlatWorldMap map = TestHelper.generateTestMap();
         AvgAnimalChildrenCountTracker tracker = new AvgAnimalChildrenCountTracker(map);
-        assertEquals(0, tracker.getValue());
+        assertEquals(0.0, tracker.getValue());
         Animal animal1 = TestHelper.generateRandomAnimal(map);
-        assertEquals(0, tracker.getValue());
+        assertEquals(0.0, tracker.getValue());
         Animal animal2 = TestHelper.generateRandomAnimal(map);
-        assertEquals(0, tracker.getValue());
+        assertEquals(0.0, tracker.getValue());
         TestHelper.generateRandomAnimal(map);
-        assertEquals(0, tracker.getValue());
-        animal1.reproduce(animal2);
+        assertEquals(0.0, tracker.getValue());
+        Animal.reproduce(animal1,animal2);
         assertEquals(0.5, tracker.getValue());
     }
 }

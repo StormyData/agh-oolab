@@ -12,11 +12,10 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UtilTest {
-
+    private final static Random random = new Random();
     @Test
     void chooseRandomElementOfList() {
         List<Integer> list = List.of(1, 5, 3, 6, 10, 1);
-        Random random = new Random();
         for (int i = 0; i < 100; i++)
             assertTrue(list.contains(Util.chooseRandomElementOfList(random, list)));
     }
@@ -25,7 +24,6 @@ class UtilTest {
     void chooseRandomElementsOfListDistinct() {
         List<Integer> list = List.of(1, 5, 3, 6, 10, 2);
         List<Integer> listSorted = list.stream().sorted().toList();
-        Random random = new Random();
         List<Integer> chosen1 = Util.chooseRandomElementsOfListDistinct(random, list, 5);
         assertTrue(list.containsAll(chosen1));
         assertEquals(5, chosen1.stream().distinct().count());
@@ -40,7 +38,6 @@ class UtilTest {
 
     @Test
     void chooseRandomIndices() {
-        Random random = new Random();
         int[] chosen1 = Util.chooseRandomIndices(random, 5, 3);
 
         assertTrue(Arrays.stream(chosen1).allMatch(index -> 0 <= index && index < 5));

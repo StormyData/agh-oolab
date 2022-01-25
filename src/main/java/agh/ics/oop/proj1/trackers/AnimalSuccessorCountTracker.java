@@ -3,14 +3,14 @@ package agh.ics.oop.proj1.trackers;
 import agh.ics.oop.proj1.AbstractNonFlatWorldMap;
 import agh.ics.oop.proj1.AbstractWorldMapElement;
 import agh.ics.oop.proj1.Animal;
-import agh.ics.oop.proj1.observers.IReproductionObserver;
+import agh.ics.oop.proj1.observers.IAnimalStateChangedObserver;
 import agh.ics.oop.proj1.observers.IWorldMapElementRemovedObserver;
 
 import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-public class AnimalSuccessorCountTracker implements IReproductionObserver, IWorldMapElementRemovedObserver, INumericTracker {
+public class AnimalSuccessorCountTracker implements IWorldMapElementRemovedObserver, INumericTracker, IAnimalStateChangedObserver {
     private final Set<Animal> observedAnimals = new HashSet<>();
     private long deadSuccessors;
 
@@ -42,7 +42,7 @@ public class AnimalSuccessorCountTracker implements IReproductionObserver, IWorl
     }
 
     @Override
-    public double getValue() {
+    public Number getValue() {
         return getSuccessors();
     }
 

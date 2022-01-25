@@ -2,15 +2,13 @@ package agh.ics.oop.proj1.gui;
 
 import agh.ics.oop.proj1.Animal;
 import agh.ics.oop.proj1.MapDirection;
-import agh.ics.oop.proj1.observers.IAnimalDiedObserver;
-import agh.ics.oop.proj1.observers.IEnergyChangedObserver;
-import agh.ics.oop.proj1.observers.IFacingChangedObserver;
+import agh.ics.oop.proj1.observers.IAnimalStateChangedObserver;
 import javafx.application.Platform;
 import javafx.scene.text.Text;
 
 import java.util.ResourceBundle;
 
-public class AnimalInfoBox extends MapElementInfoBox implements IEnergyChangedObserver, IAnimalDiedObserver, IFacingChangedObserver {
+public class AnimalInfoBox extends MapElementInfoBox implements IAnimalStateChangedObserver {
     public AnimalInfoBox(Animal animal) {
         super(animal);
     }

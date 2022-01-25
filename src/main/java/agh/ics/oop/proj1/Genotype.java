@@ -32,20 +32,20 @@ public class Genotype {
         return MoveDirection.values()[gene];
     }
 
-    public Genotype combineWithAlpha(Genotype other, float alpha) {
+    public static Genotype combineWithAlpha(Genotype left,Genotype right, float alpha) {
         if (alpha < 0 || alpha > 1)
             throw new IllegalArgumentException(
                     String.format("alpha must be between 0 and 1, got %f", alpha));
 
         int numberOfElementsFromThis = (int) (nofGenes * alpha);
         if (random.nextBoolean()) {
-            return combineWithAlphaSided(this, other, numberOfElementsFromThis);
+            return combineWithAlphaSided(left, right, numberOfElementsFromThis);
         } else {
-            return combineWithAlphaSided(other, this, nofGenes - numberOfElementsFromThis);
+            return combineWithAlphaSided(right, left, nofGenes - numberOfElementsFromThis);
         }
     }
 
-    private Genotype combineWithAlphaSided(Genotype genotypeLeft, Genotype genotypeRight, int numberOfElementsFromLeft) {
+    private static Genotype combineWithAlphaSided(Genotype genotypeLeft, Genotype genotypeRight, int numberOfElementsFromLeft) {
         int[] combinedGenome = new int[nofGenes];
 
         //copy genes from LeftGenome

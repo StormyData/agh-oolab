@@ -11,16 +11,6 @@ public class Grass extends AbstractWorldMapElement {
     }
 
     @Override
-    public String getImageName() {
-        return "gras.png";
-    }
-
-    @Override
-    public int displayPriority() {
-        return -1;
-    }
-
-    @Override
     public String toString() {
         return "*";
     }

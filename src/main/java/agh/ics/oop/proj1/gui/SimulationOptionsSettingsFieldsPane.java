@@ -72,7 +72,8 @@ public class SimulationOptionsSettingsFieldsPane extends GridPane {
     }
 
     private Integer getIntValue(String s) {
-        return intFields.get(s).getValue();
+        Number n = intFields.get(s).getValue();
+        return n.intValue();
     }
 
     private Double getDoubleValue(String s) {

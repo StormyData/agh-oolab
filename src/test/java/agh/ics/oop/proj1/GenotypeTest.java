@@ -41,9 +41,9 @@ class GenotypeTest {
         Genotype genotype2 = new Genotype(new int[]
                 {0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 7});
 
-        assertThrows(IllegalArgumentException.class, () -> genotype1.combineWithAlpha(genotype2, 1.5f));
+        assertThrows(IllegalArgumentException.class, () -> Genotype.combineWithAlpha(genotype1,genotype2, 1.5f));
 
-        assertThrows(IllegalArgumentException.class, () -> genotype1.combineWithAlpha(genotype2, -0.5f));
+        assertThrows(IllegalArgumentException.class, () -> Genotype.combineWithAlpha(genotype1,genotype2, -0.5f));
 
         Genotype expectedGenotype50percent1 = new Genotype(new int[]
                 {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 2, 2, 2, 2, 2, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 7});
@@ -51,7 +51,7 @@ class GenotypeTest {
                 {0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 6, 6, 7, 7, 7, 7});
 
         for (int i = 0; i < 10; i++) {
-            Genotype combinedGenotype1 = genotype1.combineWithAlpha(genotype2, 0.5f);
+            Genotype combinedGenotype1 = Genotype.combineWithAlpha(genotype1,genotype2, 0.5f);
             assertTrue(combinedGenotype1.equals(expectedGenotype50percent1) || combinedGenotype1.equals(expectedGenotype50percent2),
                     String.format("combined genotype %s is neither %s nor %s", combinedGenotype1, expectedGenotype50percent1, expectedGenotype50percent2));
         }
@@ -61,7 +61,7 @@ class GenotypeTest {
                 {0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 4, 4, 5, 4, 5, 5, 6, 6, 7, 7, 7, 7});
 
         for (int i = 0; i < 10; i++) {
-            Genotype combinedGenotype2 = genotype1.combineWithAlpha(genotype2, 0.3f);
+            Genotype combinedGenotype2 = Genotype.combineWithAlpha(genotype1,genotype2, 0.3f);
             assertTrue(combinedGenotype2.equals(expectedGenotype30percent1) || combinedGenotype2.equals(expectedGenotype30percent2),
                     String.format("combined genotype %s is neither %s nor %s", combinedGenotype2, expectedGenotype30percent1, expectedGenotype30percent2));
 

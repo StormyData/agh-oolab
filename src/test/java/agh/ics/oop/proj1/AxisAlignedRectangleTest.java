@@ -7,7 +7,7 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AxisAlignedRectangleTest {
-
+    private static final Random random = new Random();
     @Test
     void isContaining() {
         AxisAlignedRectangle rectangle = new AxisAlignedRectangle(new Vector2d(-5, -5), new Vector2d(5, 5));
@@ -25,7 +25,6 @@ class AxisAlignedRectangleTest {
     void getRandomVectorInside() {
         AxisAlignedRectangle rectangle = new AxisAlignedRectangle(new Vector2d(-5, -5), new Vector2d(5, 5));
 
-        Random random = new Random();
         for (int i = 0; i < 100; i++) {
             Vector2d pos = rectangle.getRandomVectorInside(random);
             assertTrue(rectangle.contains(pos));

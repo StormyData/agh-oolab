@@ -13,7 +13,8 @@ public class ObserverHolder {
     private final Set<Class<? extends IObserver>> acceptedObservers = new HashSet<>();
 
     public ObserverHolder() {
-
+        //constructs a holder, that doesn't accept any observers by default
+        //accepted observers may be added later by using addAcceptedObserverType method
     }
 
     public ObserverHolder(Set<Class<? extends IObserver>> acceptedObservers) {

@@ -1,12 +1,11 @@
 package agh.ics.oop.proj1.trackers;
 
 import agh.ics.oop.proj1.Animal;
-import agh.ics.oop.proj1.observers.IAnimalDiedObserver;
-import agh.ics.oop.proj1.observers.IReproductionObserver;
+import agh.ics.oop.proj1.observers.IAnimalStateChangedObserver;
 
 import java.util.ResourceBundle;
 
-public class AnimalChildrenCountTracker implements IReproductionObserver, INumericTracker, IAnimalDiedObserver {
+public class AnimalChildrenCountTracker implements INumericTracker, IAnimalStateChangedObserver {
     private final Animal trackedAnimal;
     private long childrenCount;
 
@@ -30,7 +29,7 @@ public class AnimalChildrenCountTracker implements IReproductionObserver, INumer
     }
 
     @Override
-    public double getValue() {
+    public Number getValue() {
         return getChildrenCount();
     }
 

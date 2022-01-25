@@ -3,7 +3,7 @@ package agh.ics.oop.proj1.trackers;
 import agh.ics.oop.proj1.AbstractNonFlatWorldMap;
 import agh.ics.oop.proj1.AbstractWorldMapElement;
 import agh.ics.oop.proj1.Animal;
-import agh.ics.oop.proj1.observers.IReproductionObserver;
+import agh.ics.oop.proj1.observers.IAnimalStateChangedObserver;
 import agh.ics.oop.proj1.observers.IWorldMapElementAddedObserver;
 import agh.ics.oop.proj1.observers.IWorldMapElementRemovedObserver;
 
@@ -13,7 +13,7 @@ import java.util.OptionalDouble;
 import java.util.ResourceBundle;
 
 public class AvgAnimalChildrenCountTracker implements IWorldMapElementAddedObserver,
-        IWorldMapElementRemovedObserver, IReproductionObserver, INumericTracker {
+        IWorldMapElementRemovedObserver, IAnimalStateChangedObserver, INumericTracker {
     protected final Map<Animal, Integer> animalChildrenCountMap = new HashMap<>();
 
     public AvgAnimalChildrenCountTracker(AbstractNonFlatWorldMap map) {
@@ -53,7 +53,7 @@ public class AvgAnimalChildrenCountTracker implements IWorldMapElementAddedObser
     }
 
     @Override
-    public double getValue() {
+    public Number getValue() {
         return getAvgChildren();
     }
 

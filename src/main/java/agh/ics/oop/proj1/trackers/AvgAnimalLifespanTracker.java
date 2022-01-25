@@ -3,12 +3,12 @@ package agh.ics.oop.proj1.trackers;
 import agh.ics.oop.proj1.AbstractNonFlatWorldMap;
 import agh.ics.oop.proj1.AbstractWorldMapElement;
 import agh.ics.oop.proj1.Animal;
-import agh.ics.oop.proj1.observers.IAnimalDiedObserver;
+import agh.ics.oop.proj1.observers.IAnimalStateChangedObserver;
 import agh.ics.oop.proj1.observers.IWorldMapElementAddedObserver;
 
 import java.util.ResourceBundle;
 
-public class AvgAnimalLifespanTracker implements IWorldMapElementAddedObserver, IAnimalDiedObserver, INumericTracker {
+public class AvgAnimalLifespanTracker implements IWorldMapElementAddedObserver, IAnimalStateChangedObserver, INumericTracker {
     private long sum;
     private long nofAnimals;
 
@@ -39,7 +39,7 @@ public class AvgAnimalLifespanTracker implements IWorldMapElementAddedObserver, 
     }
 
     @Override
-    public double getValue() {
+    public Number getValue() {
         return getAvgLifespan();
     }
 

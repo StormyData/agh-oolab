@@ -11,12 +11,12 @@ class AvgEnergyLevelTrackerTest {
     void getValue() {
         AbstractNonFlatWorldMap map = TestHelper.generateTestMap();
         AvgEnergyLevelTracker tracker = new AvgEnergyLevelTracker(map);
-        assertEquals(0, tracker.getValue());
+        assertEquals(0.0, tracker.getValue());
         new Animal(map, new Vector2d(0, 0), MapDirection.NORTH, new Genotype(), 5, 5, () -> 0);
-        assertEquals(5, tracker.getValue());
+        assertEquals(5.0, tracker.getValue());
         new Animal(map, new Vector2d(0, 0), MapDirection.NORTH, new Genotype(), 3, 5, () -> 0);
-        assertEquals(4, tracker.getValue());
+        assertEquals(4.0, tracker.getValue());
         new Animal(map, new Vector2d(0, 0), MapDirection.NORTH, new Genotype(), 7, 5, () -> 0);
-        assertEquals(5, tracker.getValue());
+        assertEquals(5.0, tracker.getValue());
     }
 }

@@ -13,9 +13,6 @@ public abstract class AbstractWorldMapElement {
         return position;
     }
 
-    public abstract String getImageName();
-
-    public abstract int displayPriority();
 
     public abstract String getDisplayName();
 }

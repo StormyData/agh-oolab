@@ -14,12 +14,12 @@ class AnimalSuccessorCountTrackerTest {
         Animal trackedAnimal = TestHelper.generateRandomAnimal(map);
         AnimalSuccessorCountTracker tracker = new AnimalSuccessorCountTracker(trackedAnimal, map);
         Animal animal1 = TestHelper.generateRandomAnimal(map);
-        assertEquals(0, tracker.getValue());
-        trackedAnimal.reproduce(animal1);
-        assertEquals(1, tracker.getValue());
+        assertEquals(0L, tracker.getValue());
+        Animal.reproduce(trackedAnimal,animal1);
+        assertEquals(1L, tracker.getValue());
         map.getStreamOfAllObjectsOfClass(Animal.class).
                 filter(animal -> animal != animal1 && animal != trackedAnimal).findAny().
-                ifPresent(animal1::reproduce);
-        assertEquals(2, tracker.getValue());
+                ifPresent(animal -> Animal.reproduce(animal,animal1));
+        assertEquals(2L, tracker.getValue());
     }
 }

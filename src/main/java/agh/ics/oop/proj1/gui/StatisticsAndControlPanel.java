@@ -4,16 +4,20 @@ import agh.ics.oop.proj1.*;
 import agh.ics.oop.proj1.observers.IEngineTickedObserver;
 import agh.ics.oop.proj1.observers.IMapObjectClickedObserver;
 import agh.ics.oop.proj1.trackers.*;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class StatisticsAndControlPanel extends TabPane implements IMapObjectClickedObserver, IEngineTickedObserver {
     private final HashSet<NumericDataCollector> collectors = new HashSet<>();
     private final HashSet<NumericDataCollector> additionalCollectors = new HashSet<>();
     private final AbstractNonFlatWorldMap map;
+    private final TabPane additionalInfoTabPane = new TabPane();
+    private final TabPane generalInfoTabPane = new TabPane();
 
     public StatisticsAndControlPanel(AbstractNonFlatWorldMap map, RunnerEngine engine, GridManager manager, AxisAlignedRectangle mapBounds) {
         engine.addObserver(this);
@@ -22,7 +26,17 @@ public class StatisticsAndControlPanel extends TabPane implements IMapObjectClic
         this.map = map;
 
         getTabs().add(new ControlTab(engine, this, mapBounds));
-        getTabs().add(new DominantGenotypeTab(map, manager));
+        generalInfoTabPane.getTabs().add(new DominantGenotypeTab(map, manager));
+
+        Tab generalInfoTab = new Tab(ResourceBundle.getBundle("strings").getString("statisticsAndControlPanel.generalInfoTab.name"));
+        generalInfoTab.setClosable(false);
+        generalInfoTab.setContent(generalInfoTabPane);
+        getTabs().add(generalInfoTab);
+
+        Tab additionalInfoTab = new Tab(ResourceBundle.getBundle("strings").getString("statisticsAndControlPanel.additionalInfoTab.name"));
+        additionalInfoTab.setClosable(false);
+        additionalInfoTab.setContent(additionalInfoTabPane);
+        getTabs().add(additionalInfoTab);
 
         addGeneralTrackerTabs(map);
 
@@ -39,7 +53,7 @@ public class StatisticsAndControlPanel extends TabPane implements IMapObjectClic
 
         collectors.addAll(Arrays.stream(generalTrackers).
                 map(NumericDataCollector::new).toList());
-        getTabs().addAll(
+        generalInfoTabPane.getTabs().addAll(
                 collectors.stream().
                         map(collector -> new NumericStatisticsChart(collector, false)).
                         toList());
@@ -52,7 +66,7 @@ public class StatisticsAndControlPanel extends TabPane implements IMapObjectClic
 
     @Override
     public void mapObjectClicked(AbstractWorldMapElement element) {
-        getTabs().add(new MapElementInfoTab(element, map));
+        additionalInfoTabPane.getTabs().add(new MapElementInfoTab(element, map));
 
         if (element instanceof Animal animal) {
             addAdditionalAnimalTrackers(animal);
@@ -77,7 +91,7 @@ public class StatisticsAndControlPanel extends TabPane implements IMapObjectClic
         additionalCollectors.add(collector);
 
         NumericStatisticsChart chart = new NumericStatisticsChart(collector, true);
-        getTabs().add(chart);
+        additionalInfoTabPane.getTabs().add(chart);
 
         chart.setOnCloseRequest(event -> additionalCollectors.remove(collector));
     }

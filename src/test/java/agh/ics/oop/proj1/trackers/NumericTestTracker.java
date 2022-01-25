@@ -10,7 +10,7 @@ public class NumericTestTracker implements INumericTracker {
     }
 
     @Override
-    public double getValue() {
+    public Number getValue() {
         return value;
     }
 

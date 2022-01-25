@@ -12,12 +12,12 @@ class AnimalCountTrackerTest {
     void getValue() {
         AbstractNonFlatWorldMap map = TestHelper.generateTestMap();
         AnimalCountTracker tracker = new AnimalCountTracker(map);
-        assertEquals(0, tracker.getValue());
+        assertEquals(0L, tracker.getValue());
         Animal animal = TestHelper.generateRandomAnimal(map);
-        assertEquals(1, tracker.getValue());
+        assertEquals(1L, tracker.getValue());
         TestHelper.generateRandomAnimal(map);
         TestHelper.generateRandomAnimal(map);
-        assertEquals(3, tracker.getValue());
+        assertEquals(3L, tracker.getValue());
         map.remove(animal);
 
     }

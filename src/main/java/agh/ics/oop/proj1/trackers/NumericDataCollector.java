@@ -9,7 +9,7 @@ import java.util.List;
 
 public class NumericDataCollector implements IEngineTickedObserver, IObservable {
     protected final ObserverHolder observers = new ObserverHolder(INumericDataCollectorUpdateObserver.class);
-    protected final List<Double> values = new LinkedList<>();
+    protected final List<Number> values = new LinkedList<>();
     protected final INumericTracker tracker;
 
     public NumericDataCollector(INumericTracker tracker) {
@@ -27,7 +27,7 @@ public class NumericDataCollector implements IEngineTickedObserver, IObservable 
         return tracker.getName();
     }
 
-    public List<Double> getValues() {
+    public List<Number> getValues() {
         return Collections.unmodifiableList(values);
     }
 
@@ -44,6 +44,6 @@ public class NumericDataCollector implements IEngineTickedObserver, IObservable 
     }
 
     public double getAverage() {
-        return values.stream().mapToDouble(Double::doubleValue).average().orElse(Double.NaN);
+        return values.stream().mapToDouble(Number::doubleValue).average().orElse(Double.NaN);
     }
 }

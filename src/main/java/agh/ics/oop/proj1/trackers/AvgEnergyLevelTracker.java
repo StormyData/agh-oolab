@@ -3,13 +3,13 @@ package agh.ics.oop.proj1.trackers;
 import agh.ics.oop.proj1.AbstractNonFlatWorldMap;
 import agh.ics.oop.proj1.AbstractWorldMapElement;
 import agh.ics.oop.proj1.Animal;
-import agh.ics.oop.proj1.observers.IEnergyChangedObserver;
+import agh.ics.oop.proj1.observers.IAnimalStateChangedObserver;
 import agh.ics.oop.proj1.observers.IWorldMapElementAddedObserver;
 import agh.ics.oop.proj1.observers.IWorldMapElementRemovedObserver;
 
 import java.util.ResourceBundle;
 
-public class AvgEnergyLevelTracker implements INumericTracker, IEnergyChangedObserver, IWorldMapElementRemovedObserver, IWorldMapElementAddedObserver {
+public class AvgEnergyLevelTracker implements INumericTracker, IAnimalStateChangedObserver, IWorldMapElementRemovedObserver, IWorldMapElementAddedObserver {
     private long amount;
     private long count;
 
@@ -30,7 +30,7 @@ public class AvgEnergyLevelTracker implements INumericTracker, IEnergyChangedObs
     }
 
     @Override
-    public double getValue() {
+    public Number getValue() {
         return getAvgEnergyLevel();
     }
 

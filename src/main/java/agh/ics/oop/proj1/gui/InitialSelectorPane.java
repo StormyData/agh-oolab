@@ -11,6 +11,7 @@ import javafx.scene.control.Spinner;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -57,8 +58,15 @@ public class InitialSelectorPane extends Pane {
 
             rightBox = new MapHolderBox(new RectangularWorldMap(mapBounds), mapBounds, startingAnimals);
             leftBox = new MapHolderBox(new WrapAroundWorldMap(mapBounds), mapBounds, startingAnimals);
+            HBox box = new HBox(leftBox, rightBox);
+            box.widthProperty().addListener((obs, oldW, newW) -> {
+                leftBox.setMaxWidth(box.getWidth()/2);
+                rightBox.setMaxWidth(box.getWidth()/2);
 
-            primaryStage.setScene(new Scene(new HBox(leftBox, rightBox)));
+            });
+            primaryStage.setScene(new Scene(box));
+            leftBox.setMaxWidth(box.getWidth()/2);
+            rightBox.setMaxWidth(box.getWidth()/2);
         });
     }
 

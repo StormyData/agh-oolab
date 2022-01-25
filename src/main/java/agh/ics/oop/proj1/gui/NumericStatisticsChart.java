@@ -20,7 +20,7 @@ public class NumericStatisticsChart extends Tab implements INumericDataCollector
 
         Axis<Number> xAxis = new NumberAxis();
         Axis<Number> yAxis = new NumberAxis();
-        xAxis.setLabel(ResourceBundle.getBundle("Strings").getString("statisticsChart.xAxisName"));
+        xAxis.setLabel(ResourceBundle.getBundle("strings").getString("statisticsChart.xAxisName"));
         LineChart<Number, Number> chart = new LineChart<>(xAxis, yAxis);
         series = new XYChart.Series<>();
 
@@ -37,7 +37,7 @@ public class NumericStatisticsChart extends Tab implements INumericDataCollector
         setOnClosed(event -> collector.removeObserver(this));
     }
 
-    public void addNextValue(double value) {
+    public void addNextValue(Number value) {
         Platform.runLater(() -> {
             series.getData().add(new XYChart.Data<>(currentAge, value));
             currentAge++;

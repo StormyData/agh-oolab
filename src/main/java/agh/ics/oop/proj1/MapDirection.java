@@ -3,32 +3,33 @@ package agh.ics.oop.proj1;
 import java.util.Random;
 import java.util.ResourceBundle;
 
+
+
 public enum MapDirection {
-    NORTH,
-    NORTHEAST,
-    EAST,
-    SOUTHEAST,
-    SOUTH,
-    SOUTHWEST,
-    WEST,
-    NORTHWEST;
+    NORTH("mapDirection.NORTH", new Vector2d(0, 1), "\uD83E\uDC63"),
+    NORTHEAST("mapDirection.NORTHEAST", new Vector2d(1, 1), "\uD83E\uDC60"),
+    EAST("mapDirection.EAST", new Vector2d(1, 0), "\uD83E\uDC65"),
+    SOUTHEAST("mapDirection.SOUTHEAST", new Vector2d(1, -1), "\uD83E\uDC62"),
+    SOUTH("mapDirection.SOUTH", new Vector2d(0, -1), "\uD83E\uDC61"),
+    SOUTHWEST("mapDirection.SOUTHWEST", new Vector2d(-1, -1), "\uD83E\uDC66"),
+    WEST("mapDirection.WEST", new Vector2d(-1, 0), "\uD83E\uDC67"),
+    NORTHWEST("mapDirection.NORTHWEST", new Vector2d(-1, 1), "\uD83E\uDC64");
+    private final String name;
+    private final Vector2d unitVector;
+    private final String abbreviatedString;
+
+    MapDirection(String bundleKey, Vector2d unitVector, String abbreviatedString) {
+        name = ResourceBundle.getBundle("strings").getString(bundleKey);
+        this.unitVector = unitVector;
+        this.abbreviatedString = abbreviatedString;
+    }
 
     public static MapDirection randomDirection(Random random) {
         return values()[random.nextInt(values().length)];
     }
 
     public String toString() {
-        return ResourceBundle.getBundle("strings").getString(
-                switch (this) {
-                    case NORTH -> "mapDirection.NORTH";
-                    case NORTHEAST -> "mapDirection.NORTHEAST";
-                    case EAST -> "mapDirection.EAST";
-                    case SOUTHEAST -> "mapDirection.SOUTHEAST";
-                    case SOUTH -> "mapDirection.SOUTH";
-                    case SOUTHWEST -> "mapDirection.SOUTHWEST";
-                    case WEST -> "mapDirection.WEST";
-                    case NORTHWEST -> "mapDirection.NORTHWEST";
-                });
+        return name;
     }
 
     public MapDirection next() {
@@ -48,29 +49,10 @@ public enum MapDirection {
     }
 
     public Vector2d toUnitVector() {
-        return switch (this) {
-            case NORTH -> new Vector2d(0, 1);
-            case NORTHEAST -> new Vector2d(1, 1);
-            case EAST -> new Vector2d(1, 0);
-            case SOUTHEAST -> new Vector2d(1, -1);
-            case SOUTH -> new Vector2d(0, -1);
-            case SOUTHWEST -> new Vector2d(-1, -1);
-            case WEST -> new Vector2d(-1, 0);
-            case NORTHWEST -> new Vector2d(-1, 1);
-
-        };
+        return unitVector;
     }
 
     public String toAbbreviatedString() {
-        return switch (this) {
-            case SOUTH -> "\uD83E\uDC63";
-            case WEST -> "\uD83E\uDC60";
-            case NORTHEAST -> "\uD83E\uDC65";
-            case EAST -> "\uD83E\uDC62";
-            case NORTH -> "\uD83E\uDC61";
-            case SOUTHEAST -> "\uD83E\uDC66";
-            case SOUTHWEST -> "\uD83E\uDC67";
-            case NORTHWEST -> "\uD83E\uDC64";
-        };
+        return abbreviatedString;
     }
 }

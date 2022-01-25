@@ -1,5 +1,5 @@
 package agh.ics.oop.proj1.observers;
 
 public interface INumericDataCollectorUpdateObserver extends IObserver {
-    void addNextValue(double value);
+    void addNextValue(Number value);
 }

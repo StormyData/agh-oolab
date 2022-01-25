@@ -3,6 +3,7 @@ package agh.ics.oop.proj1.gui;
 import agh.ics.oop.proj1.AbstractWorldMapElement;
 import agh.ics.oop.proj1.Animal;
 import agh.ics.oop.proj1.Grass;
+import agh.ics.oop.proj1.MapDirection;
 import agh.ics.oop.proj1.observers.*;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -16,22 +17,32 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
-import java.io.InputStream;
+import java.util.EnumMap;
+import java.util.Map;
+public class GuiElementBox extends VBox implements IAnimalStateChangedObserver, IObservable {
+    private static  EnumMap<MapDirection,String> imageNameForAnimalFacing = new EnumMap<>(Map.ofEntries(
+            Map.entry(MapDirection.NORTH, "sheepNorth.png"),
+            Map.entry(MapDirection.NORTHEAST, "sheepNorthEast.png"),
+            Map.entry(MapDirection.EAST , "sheepEast.png"),
+            Map.entry(MapDirection.SOUTHEAST , "sheepSouthEast.png"),
+            Map.entry(MapDirection.SOUTH , "sheepSouth.png"),
+            Map.entry(MapDirection.SOUTHWEST , "sheepSouthWest.png"),
+            Map.entry(MapDirection.WEST , "sheepWest.png"),
+            Map.entry(MapDirection.NORTHWEST , "sheepNorthWest.png")
+    ));
 
-public class GuiElementBox extends VBox implements IImageChangedObserver, IEnergyChangedObserver, IObservable {
     private final ImageView view = new ImageView();
     private final Text text = new Text();
     private final AbstractWorldMapElement mapElement;
     private final ObserverHolder observers = new ObserverHolder(IMapObjectClickedObserver.class);
+    private int displayPriority;
 
     GuiElementBox(AbstractWorldMapElement mapElement) {
         this.mapElement = mapElement;
         if (mapElement instanceof IObservable observable)
             observable.addObserver(this);
 
-        view.setImage(getImageForName(mapElement.getImageName()));
-
-        getChildren().add(view);
+        String imageName=null;
 
         if (mapElement instanceof Animal animal) {
             text.setText(Integer.toString(animal.getEnergy()));
@@ -41,31 +52,31 @@ public class GuiElementBox extends VBox implements IImageChangedObserver, IEnerg
             view.setScaleY(2);
             view.setFitHeight(20);
             view.setFitWidth(20);
+            displayPriority = 1;
+            imageName = imageNameForAnimalFacing.get(animal.getFacing());
         } else if (mapElement instanceof Grass) {
             view.setFitHeight(30);
             view.setFitWidth(30);
+            displayPriority = -1;
+            imageName="gras.png";
         }
+
+        getChildren().add(view);
+        view.setImage(getImageForName(imageName));
+
         text.setTextAlignment(TextAlignment.CENTER);
         setAlignment(Pos.CENTER);
         setOnMouseClicked(this::onMouseClicked);
     }
 
     private static Image getImageForName(String imageName) {
-        InputStream stream = Thread.currentThread().getContextClassLoader().
-                getResourceAsStream(imageName);
-        if (stream == null)
-            return null;
-        return new Image(stream);
+        return ImageContainerSingleton.getSingleton().getImageForName(imageName);
     }
 
-    @Override
-    public void imageChanged(String newName) {
-        Platform.runLater(() -> view.setImage(getImageForName(newName)));
-    }
 
 
     public int getDisplayPriority() {
-        return mapElement.displayPriority();
+        return displayPriority;
     }
 
     public boolean isAssociated(Object observable) {
@@ -94,6 +105,11 @@ public class GuiElementBox extends VBox implements IImageChangedObserver, IEnerg
     @Override
     public void energyChanged(int newEnergy, int oldEnergy) {
         Platform.runLater(() -> text.setText(Integer.toString(newEnergy)));
+    }
+
+    @Override
+    public void facingChanged(MapDirection newFacing) {
+        Platform.runLater(() -> view.setImage(getImageForName(imageNameForAnimalFacing.get(newFacing))));
     }
 
     public void setHighlighted(boolean bool) {

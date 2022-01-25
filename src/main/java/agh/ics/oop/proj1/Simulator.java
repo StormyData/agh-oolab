@@ -5,7 +5,7 @@ import agh.ics.oop.proj1.observers.*;
 import java.util.*;
 
 public class Simulator implements ICurrentAgeProvider, IObservable {
-    private final Random random = new Random();
+    private static final Random random = new Random();
     private final AbstractNonFlatWorldMap map;
     private final ObserverHolder observers = new ObserverHolder(IDoneMagicObserver.class, IAllAnimalsDiedObserver.class);
     private final SimulationOptions options;
@@ -122,7 +122,7 @@ public class Simulator implements ICurrentAgeProvider, IObservable {
 
             }
 
-            chosenAnimals.get(0).reproduce(chosenAnimals.get(1));
+            Animal.reproduce(chosenAnimals.get(0),chosenAnimals.get(1));
         }
     }
 
