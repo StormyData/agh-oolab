@@ -11,7 +11,7 @@ public class Board {
     public static final Vector2d SIZE_MINUS_1_1 = SIZE.subtract(new Vector2d(1,1));
     private static final Vector2d ORIGIN = new Vector2d(0, 0);
     private final Set<IBoardStateChangedObserver> observers = new HashSet<>();
-    private final BoardPiece[][] board = new BoardPiece[8][8];
+    private final BoardPiece[][] board = new BoardPiece[SIZE.x][SIZE.y];
 
 
     public void addBoardPiece(Vector2d pos, Side side) {
